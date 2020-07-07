@@ -25,6 +25,4 @@ attr_reader :coordinate
     @ship.hit
   end
 
-autosave?
-
 end
