@@ -21,9 +21,9 @@ class CellTest < Minitest::Test
     assert_equal "B4", @cell.coordinate
   end
 
-   def test_what_is_in_cell
+  def test_what_is_in_cell
      assert_equal nil, @cell.ship
-   end
+  end
 
   def test_is_empty?
     assert_equal true, @cell.empty?
@@ -39,7 +39,8 @@ class CellTest < Minitest::Test
   def test_fired_upon?
     @cell.place_ship(@cruiser)
     assert_equal false, @cell.fired_upon?
-    #full health bar
+    @cell.fire_upon
+    assert_equal true, @cell.fired_upon?
   end
 
   def test_fire
@@ -49,7 +50,9 @@ class CellTest < Minitest::Test
     assert_equal 2, @cruiser.health
     @cell.fire_upon
     assert_equal 1, @cruiser.health
-    end
+    @cell.fire_upon
+    assert_equal true, @cruiser.sunk?
+  end
 
 
 end
