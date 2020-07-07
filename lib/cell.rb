@@ -2,10 +2,32 @@ class Cell
 attr_reader :coordinate
   def initialize(coordinate)
     @coordinate = coordinate
+    @ship
   end
 
   def ship
-    nil 
+    @ship
   end
+
+  def empty?
+    @ship == nil
+  end
+
+  def place_ship(type)
+    @ship = type
+  end
+
+  def fired_upon?
+    false
+  end
+
+  def fire_upon
+    #if empty? == false
+    #.ship.hit (needs to minus 1)
+    #cell.ship.health
+    @criusrer.ship.hit
+  end
+
+
 
 end
