@@ -18,7 +18,7 @@ attr_reader :coordinate
   end
 
   def fired_upon?
-    false
+    @ship.health != @ship.length
   end
 
   def fire_upon
