@@ -28,6 +28,6 @@ attr_reader :coordinate
     @criusrer.ship.hit
   end
 
-
+autosave?
 
 end
