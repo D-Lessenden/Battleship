@@ -22,10 +22,7 @@ attr_reader :coordinate
   end
 
   def fire_upon
-    #if empty? == false
-    #.ship.hit (needs to minus 1)
-    #cell.ship.health
-    @criusrer.ship.hit
+    @ship.hit
   end
 
 autosave?

@@ -39,14 +39,16 @@ class CellTest < Minitest::Test
   def test_fired_upon?
     @cell.place_ship(@cruiser)
     assert_equal false, @cell.fired_upon?
+    #full health bar
   end
 
-  def
-      @cell.fire_upon
-      #assert_equal true, @cell.fired_upon?
-      assert_equal 10, @cruiser.ship.health
-      #I'm not sure how to phrase this
-      #it always passes
+  def test_fire
+    @cell.place_ship(@cruiser)
+    assert_equal 3, @cruiser.health
+    @cell.fire_upon
+    assert_equal 2, @cruiser.health
+    @cell.fire_upon
+    assert_equal 1, @cruiser.health
     end
 
 
