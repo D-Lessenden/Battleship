@@ -24,5 +24,5 @@ attr_reader :coordinate
   def fire_upon
     @ship.hit
   end
-
+test again
 end
