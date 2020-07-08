@@ -54,5 +54,23 @@ class CellTest < Minitest::Test
     assert_equal true, @cruiser.sunk?
   end
 
+  def test_cell_can_render
+    @cell.place_ship(@cruiser)
+    assert_equal ".", @cell.render
 
+    @cell.fire_upon
+    assert_equal "H", @cell.render
+
+    @cell.fire_upon
+    @cell.fire_upon
+
+    assert_equal "X", @cell.render
+  end
+
+  def test_cell_can_render_a_miss
+    @cell2 = Cell.new("C4")
+    @cell.place_ship(@cruiser)
+    @cell2.fire_upon
+    assert_equal "M", @cell2.render
+  end
 end
