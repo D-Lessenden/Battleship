@@ -63,13 +63,12 @@ class CellTest < Minitest::Test
 
     @cell.fire_upon
     @cell.fire_upon
-
     assert_equal "X", @cell.render
   end
 
   def test_cell_can_render_a_miss
     @cell2 = Cell.new("C4")
-    @cell.place_ship(@cruiser)
+    @cell.place_ship(@crauiser)
     @cell2.fire_upon
     assert_equal "M", @cell2.render
   end
