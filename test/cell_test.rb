@@ -2,8 +2,6 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/ship'
 require './lib/cell'
-@cell = Cell.new("B4")
-
 require 'pry'
 
 class CellTest < Minitest::Test
