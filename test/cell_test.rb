@@ -63,7 +63,6 @@ class CellTest < Minitest::Test
 
     @cell.fire_upon
     @cell.fire_upon
-
     assert_equal "X", @cell.render
   end
 
