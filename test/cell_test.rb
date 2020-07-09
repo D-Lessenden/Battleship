@@ -34,7 +34,6 @@ class CellTest < Minitest::Test
     assert_equal @cruiser, @cell.ship
   end
 
-
   def test_fire
     @cell.place_ship(@cruiser)
     assert_equal 3, @cruiser.health
