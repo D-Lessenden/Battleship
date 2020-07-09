@@ -23,29 +23,29 @@ class Board
   end
 
 
-  def valid_placement?(ship, array)#change array to coordinates during refactor
-    letter = array.map do |cord|
+  def valid_placement?(ship, coordinates)
+    letter = coordinates.map do |cord|
      cord[0]
     end
 
-    num = array.map do |cord|
+    num = coordinates.map do |cord|
       cord[1]
     end
 
     num = num.map(&:to_i)
     ord = letter.map(&:ord)
 
-    (ship.length == 2 && array.length == 2 ||
-      ship.length == 3 && array.length == 3) &&
+    (ship.length == 2 && coordinates.length == 2 ||
+      ship.length == 3 && coordinates.length == 3) &&
         (((letter.uniq.size == 1 &&
           (num.each_cons(2).all? { |x,y| y == x + 1})) ||
             (num.uniq.size == 1 && ord.each_cons(2).all? { |x,y| y == x + 1})))
     #need to add a @cell empty? boolean
   end
 
-  # def place(ship, array)
+  # def place(ship, coordinates)
   #   count = 0
-  #   array.length 3.times do |assignment|
+  #   coordinates.length 3.times do |assignment|
   #     count += 1
   # end
 end #class
