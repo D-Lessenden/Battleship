@@ -9,7 +9,6 @@ class Board
   def cells
     letters = ["A", "B", "C", "D"]
     numbers = [1, 2, 3, 4]
-    @cells = {}
 
     letters.each do |letter|
       numbers.each do |number|
@@ -22,6 +21,6 @@ class Board
     @cells.has_key?(cord)
   end
 
-  #valid_placement(ship, [cords])
-  #true if ship.length == 3
+  # valid_placement(ship, [cords])
+  # true if ship.length == 3
 end
