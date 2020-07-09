@@ -32,6 +32,7 @@ class BoardTest < Minitest::Test
 
     @board.valid_coordinate?("A22")
     refute @board.valid_coordinate?("A22")
+    binding.
   end
 
    def test_valid_placement

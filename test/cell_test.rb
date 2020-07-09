@@ -34,13 +34,6 @@ class CellTest < Minitest::Test
     assert_equal @cruiser, @cell.ship
   end
 
-  def test_fired_upon?
-    @cell.place_ship(@cruiser)
-    assert_equal false, @cell.fired_upon?
-    @cell.fire_upon
-    assert_equal true, @cell.fired_upon?
-  end
-
   def test_fire
     @cell.place_ship(@cruiser)
     assert_equal 3, @cruiser.health
@@ -52,22 +45,28 @@ class CellTest < Minitest::Test
     assert_equal true, @cruiser.sunk?
   end
 
-  def test_cell_can_render
+  #Moved fired_upon? test below test_fire for readability
+  def test_fired_upon?
     @cell.place_ship(@cruiser)
-    assert_equal ".", @cell.render
-
+    assert_equal false, @cell.fired_upon?
     @cell.fire_upon
-    assert_equal "H", @cell.render
-
-    @cell.fire_upon
-    @cell.fire_upon
-    assert_equal "X", @cell.render
+    assert_equal true, @cell.fired_upon?
   end
 
-  def test_cell_can_render_a_miss
-    @cell2 = Cell.new("C4")
-    @cell.place_ship(@cruiser)
+  #Combined miss render test with other render tests, removed unnecessary cell instantiation(is that a word?)
+  def test_cell_can_render
+    @cell.fire_upon
+    assert_equal "M", @cell.render
+
+    @cell2 = Cell.new("C3")
+    @cell2.place_ship(@cruiser)
+    assert_equal ".", @cell2.render
+
     @cell2.fire_upon
-    assert_equal "M", @cell2.render
+    assert_equal "H", @cell2.render
+
+    @cell2.fire_upon
+    @cell2.fire_upon
+    assert_equal "X", @cell2.render
   end
 end
