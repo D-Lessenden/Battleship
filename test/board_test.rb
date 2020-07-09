@@ -16,6 +16,7 @@ class BoardTest < Minitest::Test
   end
 
   def test_valid_coord
+    @board.cells
     @board.valid_coordinate?("A1")
     assert true, @board.valid_coordinate?("A1")
 
@@ -31,6 +32,7 @@ class BoardTest < Minitest::Test
 
     @board.valid_coordinate?("A22")
     refute @board.valid_coordinate?("A22")
+    binding.
   end
 
 end
