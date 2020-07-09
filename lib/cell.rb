@@ -1,13 +1,14 @@
 class Cell
-attr_reader :coordinate
+attr_reader :coordinate, :ship
   def initialize(coordinate)
     @coordinate = coordinate
     @ship
   end
 
-  def ship
-    @ship
-  end
+  # added :ship to attr_reader which negates need for ship method
+  # def ship
+  #   @ship
+  # end
 
   def empty?
     @ship == nil
@@ -15,6 +16,13 @@ attr_reader :coordinate
 
   def place_ship(type)
     @ship = type
+  end
+
+  #removed unnecessary if statement, moved above fired_upon? for readability
+  def fire_upon
+    if @ship != nil
+      @ship.hit
+    end
   end
 
   def fired_upon?
@@ -25,13 +33,6 @@ attr_reader :coordinate
     end
   end
 
-  def fire_upon
-     if @ship == nil
-       nil
-     else
-      @ship.hit
-    end
-  end
 
   def render
     if fired_upon? == nil
