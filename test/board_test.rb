@@ -16,7 +16,7 @@ class BoardTest < Minitest::Test
   end
 
   def test_valid_coord
-    @board.cells
+    @board.generate_cells
     @board.valid_coordinate?("A1")
     assert_equal true, @board.valid_coordinate?("A1")
 
@@ -36,7 +36,7 @@ class BoardTest < Minitest::Test
   end
 
    def test_valid_placement
-     @board.cells
+     @board.generate_cells
      submarine = Ship.new("Submarine", 2)
      cruiser = Ship.new("Cruiser", 3)
     # binding.pry
@@ -71,7 +71,7 @@ class BoardTest < Minitest::Test
    def test_consecutive
      #used this originally to test diagonal and consecutive
      skip
-     @board.cells
+     @board.generate_cells
      submarine = Ship.new("Submarine", 2)
      cruiser = Ship.new("Cruiser", 3)
 
@@ -88,5 +88,15 @@ class BoardTest < Minitest::Test
      assert_equal false, @board.consecutive(submarine, ["C2", "D3"])
      assert_equal false, @board.consecutive(cruiser, ["A1", "B2", "C3"])
    end
+
+   # def it_can_place_ship
+   #   cruiser = Ship.new("Cruiser", 3)
+   #   board.place(cruiser, ["A1", "A2", "A3"])
+   #
+   #   cell_1 = board.generate_cells["A1"]
+   #   cell_2 = board.generate_cells["A2"]
+   #   cell_3 = board.generate_cells["A3"]
+   #
+   #
 
 end
