@@ -21,6 +21,20 @@ class Board
     @cells.has_key?(cord)
   end
 
-  # valid_placement(ship, [cords])
-  # true if ship.length == 3
 end
+end #class
+
+# if array[0] == A || array[0] == B ||  array[0] == C || array[0] == D #horizontal
+#   &&
+# if array[1]
+#
+#
+# range << cord[1]
+# 2..4.to_a
+#
+#    && array[1] ==
+
+#if all are A and
+
+#if A are all A true
+#if all
