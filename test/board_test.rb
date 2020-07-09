@@ -32,7 +32,7 @@ class BoardTest < Minitest::Test
 
     @board.valid_coordinate?("A22")
     refute @board.valid_coordinate?("A22")
-    binding.
+
   end
 
    def test_valid_placement
@@ -53,7 +53,21 @@ class BoardTest < Minitest::Test
      submarine = Ship.new("Submarine", 2)
      cruiser = Ship.new("Cruiser", 3)
 
-     assert_equal "bla", @board.consecutive(submarine, ["A2", "A3"])
+     assert_equal true, @board.consecutive(cruiser, ["A2", "A3", "A4"])
+     assert_equal true, @board.consecutive(submarine, ["D2", "D3"])
+     assert_equal false, @board.consecutive(submarine, ["D1", "D4"])
+     assert_equal true, @board.consecutive(cruiser, ["A1", "B1", "C1"])
+     assert_equal false, @board.consecutive(cruiser, ["A1", "B1", "D1"])
+
+     assert_equal false, @board.consecutive(cruiser, ["A1", "A2", "A4"])
+     assert_equal false, @board.consecutive(submarine, ["A1", "C1"])
+     assert_equal false, @board.consecutive(cruiser, ["A3", "A2", "A1"])
+     assert_equal false, @board.consecutive(submarine, ["C1", "B1"])
+     assert_equal false, @board.consecutive(submarine, ["A1", "B2"])
+     assert_equal false, @board.consecutive(submarine, ["C2", "D3"])
+     assert_equal false, @board.consecutive(cruiser, ["A1", "B2", "C3"])
+
+
    end
 
 end
