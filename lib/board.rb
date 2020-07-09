@@ -40,7 +40,7 @@ def consecutive(ship, array)
   p b
 end
 end #class
-
+ 
 # if array[0] == A || array[0] == B ||  array[0] == C || array[0] == D #horizontal
 #   &&
 # if array[1]
