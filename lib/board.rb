@@ -21,6 +21,7 @@ class Board
     @cells.has_key?(cord)
   end
 
+<<<<<<< HEAD
   def valid_placement?(ship, array)
     if ship.length == 2 && array.length == 2
       true
@@ -38,6 +39,8 @@ def consecutive(ship, array)
     b << cord[0]
   end
   p b
+=======
+>>>>>>> 03ded84928f9d3d71511b541e1ac363575cb7a91
 end
 end #class
  
