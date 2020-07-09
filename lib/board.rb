@@ -21,23 +21,6 @@ class Board
     @cells.has_key?(cord)
   end
 
-  def valid_placement?(ship, array)
-    if ship.length == 2 && array.length == 2
-      true
-    elsif
-      ship.length == 3 && array.length == 3
-      true
-    else
-      false
-    end
-  end
-
-def consecutive(ship, array)
-  b = []
-  array.each do |cord|
-    b << cord[0]
-  end
-  p b
 end
 end #class
 
