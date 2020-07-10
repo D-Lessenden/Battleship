@@ -39,9 +39,11 @@ class Board
     #need to add a @cell empty? boolean
   end
 
-  # def place(ship, coordinates)
-  #   count = 0
-  #   coordinates.length 3.times do |assignment|
-  #     count += 1
-  # end
+  def place(ship, coordinates)
+    if valid_placement?(ship, coordinates)
+      coordinates.each do |cord|
+        @cells[cord].place_ship(ship)
+      end
+    end
+  end
 end #class
