@@ -53,6 +53,29 @@ class Board
     end
   end
 
+  #overlapping ships
+  #cell.empty?
+
+
+  def render
+    grid = [
+    "  1 2 3 4 ",
+    "A . . . . ",
+    "B . . . . ",
+    "C . . . . ",
+    "D . . . . "
+    ].join("\n")
+    puts grid
+
+
+#use valid coordinate?("A1")
+board.cells["A1"].fire_upon
+
+
+
+
+  end
+
 
 
 
