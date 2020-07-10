@@ -13,7 +13,7 @@ class Board
     letters.each do |letter|
       numbers.each do |number|
         @cells["#{letter}"+"#{number}"] =
-          (@cell = Cell.new("#{letter}"+"#{number}"))
+        (@cell = Cell.new("#{letter}"+"#{number}"))
       end #numbers
     end #letters
     @cells #added so that @board.generate_cells returns grid
