@@ -89,14 +89,27 @@ class BoardTest < Minitest::Test
      assert_equal false, @board.consecutive(cruiser, ["A1", "B2", "C3"])
    end
 
-   # def it_can_place_ship
-   #   cruiser = Ship.new("Cruiser", 3)
-   #   board.place(cruiser, ["A1", "A2", "A3"])
-   #
-   #   cell_1 = board.generate_cells["A1"]
-   #   cell_2 = board.generate_cells["A2"]
-   #   cell_3 = board.generate_cells["A3"]
-   #
-   #
+   def it_can_place_ship
+     cruiser = Ship.new("Cruiser", 3)
+     board.place(cruiser, ["A1", "A2", "A3"])
 
+     cell_1 = board.generate_cells["A1"]
+     cell_2 = board.generate_cells["A2"]
+     cell_3 = board.generate_cells["A3"]
+
+     cell_1.ship
+     cell_2.ship
+     cell_3.ship
+
+     assert_equal true, cell_1.ship == cell_2.ship
+   end
+
+   def test_overlapping_ships?
+     skip
+     cruiser = Ship.new("Cruiser", 3)
+     @board.place(cruiser, ["A1", "A2", "A3"])
+     submarine = Ship.new("Submarine", 2)
+
+     assert_equal false, @board.valid_placement?(submarine, ["A1", "B1"])
+   end
 end
