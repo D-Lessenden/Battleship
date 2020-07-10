@@ -10,13 +10,12 @@ class Board
     letters = ["A", "B", "C", "D"]
     numbers = [1, 2, 3, 4]
 
-    letters.each do |letter|
+    letters.map do |letter| #changed to .map so that method returns the grid
       numbers.each do |number|
         @cells["#{letter}"+"#{number}"] =
         (@cell = Cell.new("#{letter}"+"#{number}"))
       end #numbers
     end #letters
-    @cells #added so that @board.generate_cells returns grid
   end #generate_cells
 
   def valid_coordinate?(cord)
