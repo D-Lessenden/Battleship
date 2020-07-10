@@ -29,11 +29,11 @@ attr_reader :coordinate, :ship, :misses
   end
 
   def fired_upon?
-    if @misses == 0
+    if !empty? && (@ship.health != @ship.length)
+      true
+    elsif @misses == 0
       false
     elsif @misses > 0
-      true
-    elsif @ship.health != @ship.length
       true
     end
   end
