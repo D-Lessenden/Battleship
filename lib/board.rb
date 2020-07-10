@@ -7,6 +7,8 @@ class Board
   end
 
   def generate_cells #renamed as per Tim to be accurate to action performed and avoid confusion
+
+ 
     letters = ["A", "B", "C", "D"]
     numbers = [1, 2, 3, 4]
 
@@ -35,6 +37,7 @@ class Board
     num = num.map(&:to_i)
     ord = letter.map(&:ord)
 
+
     (ship.length == 2 && coordinates.length == 2 ||
       ship.length == 3 && coordinates.length == 3) &&
         (((letter.uniq.size == 1 &&
@@ -48,4 +51,6 @@ class Board
   #   coordinates.length 3.times do |assignment|
   #     count += 1
   # end
+
+
 end #class
