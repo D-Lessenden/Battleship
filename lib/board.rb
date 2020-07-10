@@ -4,7 +4,7 @@ class Board
     @cells = {}
   end
 
-  def cells
+  def cells #change this name
     letters = ["A", "B", "C", "D"]
     numbers = [1, 2, 3, 4]
 
@@ -33,28 +33,21 @@ class Board
     ord = letter.map(&:ord)
 
     (ship.length == 2 && array.length == 2 ||
-    ship.length == 3 && array.length == 3) && (((letter.uniq.size == 1 && (num.each_cons(2).all? { |x,y| y == x + 1})) ||
+    ship.length == 3 && array.length == 3) &&
+    (((letter.uniq.size == 1 && (num.each_cons(2).all? { |x,y| y == x + 1})) ||
     (num.uniq.size == 1 && ord.each_cons(2).all? { |x,y| y == x + 1})))
 
-
+    #rename x and y for each_cons to position 1 and position 2
 
     #need to add a @cell empty? boolean
   end
 
-  # def consecutive(ship, array)
-  #     letter = array.map do |cord|
-  #      cord[0]
-  #     end
-  #
-  #     num = array.map do |cord|
-  #       cord[1]
-  #     end
-  #
-  #     num = num.map(&:to_i)
-  #     ord = letter.map(&:ord)
-  #
-  # (letter.uniq.size == 1 && (num.each_cons(2).all? { |x,y| y == x + 1})) ||
-  # (num.uniq.size == 1 && ord.each_cons(2).all? { |x,y| y == x + 1})
-  # end #consecutive
+  def place(ship, array)
+    if valid_placement?(ship, array)
+      array.each do |cell|
 
+for each element of array assign
+it to @cells
+maybe select method? 
+  end
 end #class
