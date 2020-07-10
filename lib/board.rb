@@ -25,22 +25,17 @@ class Board
 
 
   def valid_placement?(ship, coordinates)
-    letter = coordinates.map do |cord|
-     cord[0]
-    end
+    coordinate_letter = coordinates.map { |coord| coord[0] }
+    coordinate_number = coordinates.map { |coord| coord[1] }
 
-    num = coordinates.map do |cord|
-      cord[1]
-    end
-
-    num = num.map(&:to_i)
-    ord = letter.map(&:ord)
+    ord = coordinate_letter.map(&:ord)
+    num = coordinate_number.map(&:to_i)
 
     (ship.length == 2 && coordinates.length == 2 ||
-      ship.length == 3 && coordinates.length == 3) &&
-        (((letter.uniq.size == 1 &&
-          (num.each_cons(2).all? { |x,y| y == x + 1})) ||
-            (num.uniq.size == 1 && ord.each_cons(2).all? { |x,y| y == x + 1})))
+    ship.length == 3 && coordinates.length == 3) &&
+    (((coordinate_letter.uniq.size == 1 &&
+    (num.each_cons(2).all? { |x,y| y == x + 1})) ||
+    (num.uniq.size == 1 && ord.each_cons(2).all? { |x,y| y == x + 1})))
     #need to add a @cell empty? boolean
   end
 
