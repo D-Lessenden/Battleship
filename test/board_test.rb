@@ -15,101 +15,141 @@ class BoardTest < Minitest::Test
     assert_instance_of Board, @board
   end
 
-  def test_valid_coord
+  def test_placement_is_not_valid_by_default
     @board.generate_cells
-    @board.valid_coordinate?("A1")
-    assert_equal true, @board.valid_coordinate?("A1")
+    submarine = Ship.new("Submarine", 2)
+    cruiser = Ship.new("Cruiser", 3)
 
-    @board.valid_coordinate?("D4")
-    assert true, @board.valid_coordinate?("D4")
+    assert_equal false, @board.valid_placement?(cruiser, ["A1", "A2"])
+    assert_equal false, @board.valid_placement?(submarine, ["A2", "A3", "A4"])
+  end
 
-    @board.valid_coordinate?("A5")
-    refute @board.valid_coordinate?("A5")
+  def test_placement_is_on_consecutive_coordinates
+    @board.generate_cells
+    submarine = Ship.new("Submarine", 2)
+    cruiser = Ship.new("Cruiser", 3)
 
-    @board.valid_coordinate?("E1")
-    assert_equal false, @board.valid_coordinate?("E1")
-    #Not sure if syntax on line 26 or line 29 is better
+    assert_equal false, @board.valid_placement?(cruiser, ["A1", "A2", "A4"])
+    assert_equal false, @board.valid_placement?(submarine, ["A1", "C1"])
+    assert_equal false, @board.valid_placement?(cruiser, ["A3", "A2", "A1"])
+    assert_equal false, @board.valid_placement?(submarine, ["C1", "B1"])
+  end
 
-    @board.valid_coordinate?("A22")
-    refute @board.valid_coordinate?("A22")
+  def test_placement_is_not_diagonal
+    @board.generate_cells
+    submarine = Ship.new("Submarine", 2)
+    cruiser = Ship.new("Cruiser", 3)
 
+    assert_equal false, @board.valid_placement?(cruiser, ["A1", "B2", "C3"])
+    assert_equal false, @board.valid_placement?(submarine, ["C2", "D3"])
   end
 
    def test_valid_placement
      @board.generate_cells
      submarine = Ship.new("Submarine", 2)
      cruiser = Ship.new("Cruiser", 3)
-    # binding.pry
 
      assert_equal true, @board.valid_placement?(submarine, ["B2", "B3"])
      assert_equal true, @board.valid_placement?(cruiser, ["A2", "A3", "A4"])
-     #assert_equal false, @board.valid_placement?(submarine, ["D2", "D3", "D4"])
-     #refute @board.valid_placement?(submarine, ["D2", "D3", "D4"]) #expected true not to be truthy
-     #assert_equal false, @board.valid_placement?(cruiser, ["A3", "A4"])
-     #ASK ABOUT THIS IN PROJECT CHECK IN
-
-
-
-
      assert_equal true, @board.valid_placement?(cruiser, ["A2", "A3", "A4"])
      assert_equal true, @board.valid_placement?(submarine, ["D2", "D3"])
      assert_equal false, @board.valid_placement?(submarine, ["D1", "D4"])
      assert_equal true, @board.valid_placement?(cruiser, ["A1", "B1", "C1"])
      assert_equal false, @board.valid_placement?(cruiser, ["A1", "B1", "D1"])
-
      assert_equal false, @board.valid_placement?(cruiser, ["A1", "A2", "A4"])
      assert_equal false, @board.valid_placement?(submarine, ["A1", "C1"])
      assert_equal false, @board.valid_placement?(cruiser, ["A3", "A2", "A1"])
-     assert_equal false, @board.valid_placement?(submarine, ["C1", "B1"])
      assert_equal false, @board.valid_placement?(submarine, ["A1", "B2"])
      assert_equal false, @board.valid_placement?(submarine, ["C2", "D3"])
      assert_equal false, @board.valid_placement?(cruiser, ["A1", "B2", "C3"])
+     assert_equal false, @board.valid_placement?(cruiser, ["A1", "A1", "A1"])
    end
 
-
-
-   def test_consecutive
-     #used this originally to test diagonal and consecutive
-     skip
-     @board.generate_cells
+   def test_cell_contains_no_ship_by_default
+     cruiser = Ship.new("Cruiser", 3)
      submarine = Ship.new("Submarine", 2)
-     cruiser = Ship.new("Cruiser", 3)
 
-     assert_equal true, @board.consecutive(cruiser, ["A2", "A3", "A4"])
-     assert_equal true, @board.consecutive(submarine, ["D2", "D3"])
-     assert_equal false, @board.consecutive(submarine, ["D1", "D4"])
-     assert_equal true, @board.consecutive(cruiser, ["A1", "B1", "C1"])
-     assert_equal false, @board.consecutive(cruiser, ["A1", "B1", "D1"])
-     assert_equal false, @board.consecutive(cruiser, ["A1", "A2", "A4"])
-     assert_equal false, @board.consecutive(submarine, ["A1", "C1"])
-     assert_equal false, @board.consecutive(cruiser, ["A3", "A2", "A1"])
-     assert_equal false, @board.consecutive(submarine, ["C1", "B1"])
-     assert_equal false, @board.consecutive(submarine, ["A1", "B2"])
-     assert_equal false, @board.consecutive(submarine, ["C2", "D3"])
-     assert_equal false, @board.consecutive(cruiser, ["A1", "B2", "C3"])
+     @board.generate_cells
+
+     assert_equal nil, @board.cells["A1"].ship
+     assert_equal nil, @board.cells["B2"].ship
+     assert_equal nil, @board.cells["C3"].ship
+     assert_equal nil, @board.cells["D4"].ship
    end
 
-   def it_can_place_ship
+   def test_it_can_place_ship
      cruiser = Ship.new("Cruiser", 3)
-     board.place(cruiser, ["A1", "A2", "A3"])
+     submarine = Ship.new("Submarine", 2)
 
-     cell_1 = board.generate_cells["A1"]
-     cell_2 = board.generate_cells["A2"]
-     cell_3 = board.generate_cells["A3"]
+     @board.generate_cells
 
-     cell_1.ship
-     cell_2.ship
-     cell_3.ship
+     @board.place(cruiser, ["A1", "A2", "A3"])
+     @board.place(submarine, ["D3", "D4"])
 
-     assert_equal true, cell_1.ship == cell_2.ship
+     assert_equal "Cruiser", @board.cells["A1"].ship.name
+     assert_equal "Submarine", @board.cells["D3"].ship.name
    end
+
+   def test_ship_placed_on_consecutive_coordinates
+     cruiser = Ship.new("Cruiser", 3)
+     submarine = Ship.new("Submarine", 2)
+
+     @board.generate_cells
+
+     @board.place(cruiser, ["A1", "A2", "A3"])
+     @board.place(submarine, ["D3", "D4"])
+
+     assert_equal true, @board.cells["A1"].ship == @board.cells["A2"].ship
+     assert_equal true, @board.cells["A2"].ship == @board.cells["A2"].ship
+     assert_equal true, @board.cells["D3"].ship == @board.cells["D4"].ship
+   end
+
+
 
    def test_overlapping_ships?
-     skip
      cruiser = Ship.new("Cruiser", 3)
-     @board.place(cruiser, ["A1", "A2", "A3"])
      submarine = Ship.new("Submarine", 2)
 
+     @board.generate_cells
+
+     @board.place(cruiser, ["A1", "A2", "A3"])
+
      assert_equal false, @board.valid_placement?(submarine, ["A1", "B1"])
+     assert_equal false, @board.valid_placement?(submarine, ["A2", "B2"])
+     assert_equal false, @board.valid_placement?(submarine, ["A3", "B3"])
    end
+   #
+   # def test_render
+   #      @board.generate_cells
+   #      cruiser = Ship.new("Cruiser", 3)
+   #      submarine = Ship.new("Submarine", 2)
+   #
+   #      @board.place(cruiser, ["A1", "A2", "A3"])
+   #      @board.place(submarine, ["D3", "D4"])
+   #      p1 = "A4"
+   #     #binding.pry
+   #
+   #      @board.render
+   #      @board.valid_coordinate?(p1)
+   #      @board.cells[p1].fire_upon
+   #      @board.render
+   #
+   #      p1 = "A3"
+   #      @board.valid_coordinate?(p1)
+   #      @board.cells[p1].fire_upon
+   #      @board.render
+   #      #
+   #      p1 = "A2"
+   #      @board.valid_coordinate?(p1)
+   #      @board.cells[p1].fire_upon
+   #      #binding.pry
+   #      @board.render
+   #
+   #      p1 = "A1"
+   #      @board.valid_coordinate?(p1)
+   #      @board.cells[p1].fire_upon
+   #      #binding.pry
+   #      @board.render
+   #    end
+
 end
