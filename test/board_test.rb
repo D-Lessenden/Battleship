@@ -114,6 +114,8 @@ class BoardTest < Minitest::Test
 
      @board.place(cruiser, ["A1", "A2", "A3"])
      @board.place(submarine, ["D3", "D4"])
+     @board.render(true)
+
      p1 = "A4"
     #binding.pry
 
