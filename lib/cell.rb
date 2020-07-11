@@ -1,9 +1,10 @@
 class Cell
-attr_reader :coordinate, :ship, :misses
+attr_reader :coordinate, :ship
   def initialize(coordinate)
     @coordinate = coordinate
     @ship
     @misses = 0
+    @hit = 0
   end
 
   # added :ship to attr_reader which negates need for ship method
@@ -25,11 +26,12 @@ attr_reader :coordinate, :ship, :misses
       @misses += 1
     elsif @ship != nil
       @ship.hit
+      @hit += 1
     end
   end
 
   def fired_upon?
-    if !empty? && (@ship.health != @ship.length)
+    if !empty? && (@hit > 0)
       true
     elsif @misses == 0
       false
@@ -41,13 +43,13 @@ attr_reader :coordinate, :ship, :misses
 
   def render
     if fired_upon? == false
-      p "."
+       "."
     elsif fired_upon? == true && empty?
-      p "M"
+       "M"
     elsif fired_upon? == true && @ship.sunk? == true
-      p "X"
+       "X"
     elsif fired_upon? == true && @ship.sunk? == false
-      p "H"
+       "H"
     end
   end
 end
