@@ -53,52 +53,24 @@ class Board
 
 
 
-  def render
-    # @boards.cells each do |cord|
-    #   cord.cell.render
-    #@cell.render #screen shot from 1 04 was set up like this
+  def render(opt_arg = false)
+   a_row = @cells.keys.select{ |keys| keys[0] == "A"}
+   b_row = @cells.keys.select{ |keys| keys[0] == "B"}
+   c_row = @cells.keys.select{ |keys| keys[0] == "C"}
+   d_row = @cells.keys.select{ |keys| keys[0] == "D"}
 
-   #  @board.cells.each do |k, v|
-   #   @board.cells[k].render
-   # end
-
-   a_row = @cells.keys.select{ |keys| keys[0][0] == "A"}
-   b_row = @cells.keys.select{ |keys| keys[0][0] == "B"}
-   c_row = @cells.keys.select{ |keys| keys[0][0] == "C"}
-   d_row = @cells.keys.select{ |keys| keys[0][0] == "D"}
-
-
-   puts " 1 2 3 4"
-   #for each cell (hash key or value) run thru render
-   p "A #{a_row.map { |key| @cells[key].render}.join(" ")} |"
-   p "B #{b_row.map { |key| @cells[key].render}.join(" ")} |"
-   p "C #{c_row.map { |key| @cells[key].render}.join(" ")} |"
-   p "D #{d_row.map { |key| @cells[key].render}.join(" ")} |"
-
+   puts "1 2 3 4"
+   if opt_arg = true
+     p "A| #{a_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+     p "B| #{b_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+     p "C| #{c_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+     p "D| #{d_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+   else
+     p "A| #{a_row.map { |key| @cells[key].render}.join(" ")} |"
+     p "B| #{b_row.map { |key| @cells[key].render}.join(" ")} |"
+     p "C| #{c_row.map { |key| @cells[key].render}.join(" ")} |"
+     p "D| #{d_row.map { |key| @cells[key].render}.join(" ")} |"
+   end
 
   end
-
-
-#   board.render
-# -> Player 1 coordinates to attack?:
-# -> user types "a1"
-# cell.fire_upon
-#@cell.render
-# board.render
-
-  #   p "Player 1: What coordinates do you want to attack?"
-  #   p1 = gets.chomp.upcase!
-  #   @board.valid_coordinate?(p1)
-  #   #if true
-  #     @board.cells[p1].fire_upon
-  #   @cell.render
-
-
-
-
-  #end
-
-
-
-
 end #class
