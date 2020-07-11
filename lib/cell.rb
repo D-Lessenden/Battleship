@@ -35,7 +35,6 @@ attr_reader :coordinate, :ship, :misses
     end
   end
 
-
   def render(opt_arg = false)
     if opt_arg == false
       if fired_upon? == false
@@ -58,12 +57,6 @@ attr_reader :coordinate, :ship, :misses
         "X" #misses = 0 && @health == 0
       elsif fired_upon? == true && @ship.sunk? == false
         "H" #misses == 0 && health > 0
-
-
-
-
-
-
       end#nested if
     end
   end#def render

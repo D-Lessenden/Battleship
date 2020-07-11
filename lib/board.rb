@@ -3,7 +3,6 @@ class Board
   attr_reader :cells #added attr_reader w/ :cells so that @board.cells responds as indicated in specs
 
   def initialize
-    #cells = @cells
     @cells = {}
   end
 
@@ -24,23 +23,20 @@ class Board
     @cells.has_key?(cord)
   end
 
-
   def valid_placement?(ship, coordinates)
-    letter = coordinates.map do |cord|
-     cord[0]
-    end
+    coordinate_letters = coordinates.map { |coord| coord[0] }
+    coordinate_numbers = coordinates.map { |coord| coord[1] }
 
-    num = coordinates.map do |cord|
-      cord[1]
-    end
+    ord = coordinate_letters.map(&:ord)
+    num = coordinate_numbers.map(&:to_i)
 
-    num = num.map(&:to_i)
-    ord = letter.map(&:ord)
-
-
-    (ship.length == 2 && coordinates.length == 2 || ship.length == 3 && coordinates.length == 3) &&
-    (((letter.uniq.size == 1 && (num.each_cons(2).all? { |x,y| y == x + 1})) || (num.uniq.size == 1 && ord.each_cons(2).all? { |x,y| y == x + 1}))) &&
+    (ship.length == 2 && coordinates.length == 2 ||
+    ship.length == 3 && coordinates.length == 3) &&
+    (((coordinate_letters.uniq.size == 1 &&
+    (num.each_cons(2).all? { |x,y| y == x + 1})) ||
+    (num.uniq.size == 1 && ord.each_cons(2).all? { |x,y| y == x + 1}))) &&
     (coordinates.all? {|cell| @cells[cell].empty?})
+    # binding.pry
   end
 
   def place(ship, coordinates)
@@ -50,8 +46,6 @@ class Board
       end
     end
   end
-
-
 
   def render(opt_arg = false)
    a_row = @cells.keys.select{ |keys| keys[0] == "A"}
@@ -70,8 +64,6 @@ class Board
      p "B| #{b_row.map { |key| @cells[key].render(true)}.join(" ")} |"
      p "C| #{c_row.map { |key| @cells[key].render(true)}.join(" ")} |"
      p "D| #{d_row.map { |key| @cells[key].render(true)}.join(" ")} |"
-
-   end
-
+    end
   end
 end #class
