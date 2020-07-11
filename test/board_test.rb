@@ -41,12 +41,12 @@ class BoardTest < Minitest::Test
      cruiser = Ship.new("Cruiser", 3)
     # binding.pry
 
+     assert_equal false, @board.valid_placement?(submarine, ["D3", "D3"])
      assert_equal true, @board.valid_placement?(submarine, ["B2", "B3"])
      assert_equal true, @board.valid_placement?(cruiser, ["A2", "A3", "A4"])
      assert_equal false, @board.valid_placement?(submarine, ["D2", "D3", "D4"])
      refute @board.valid_placement?(submarine, ["D2", "D3", "D4"]) #expected true not to be truthy
      assert_equal false, @board.valid_placement?(cruiser, ["A3", "A4"])
-     #ASK ABOUT THIS IN PROJECT CHECK IN
      assert_equal true, @board.valid_placement?(cruiser, ["A2", "A3", "A4"])
      assert_equal true, @board.valid_placement?(submarine, ["D2", "D3"])
      assert_equal false, @board.valid_placement?(submarine, ["D1", "D4"])
@@ -85,15 +85,72 @@ class BoardTest < Minitest::Test
    end
 
 
-   # def it_can_place_ship
-   #   cruiser = Ship.new("Cruiser", 3)
-   #   board.place(cruiser, ["A1", "A2", "A3"])
-   #
-   #   cell_1 = board.generate_cells["A1"]
-   #   cell_2 = board.generate_cells["A2"]
-   #   cell_3 = board.generate_cells["A3"]
-   #
-   #
+   def test_it_can_place_ship
+     cruiser = Ship.new("Cruiser", 3)
+     @board.generate_cells
+     @board.place(cruiser, ["A1", "A2", "A3"])
+     cell_1 = @board.cells["A1"]
+     cell_2 = @board.cells["A2"]
+     cell_3 = @board.cells["A3"]
+     cell_1.ship
+     cell_2.ship
+     cell_3.ship
+     assert_equal true, cell_1.ship == cell_2.ship
+   end
+
+   def test_overlapping_ships?
+     @board.generate_cells
+     cruiser = Ship.new("Cruiser", 3)
+     @board.place(cruiser, ["A1", "A2", "A3"])
+     submarine = Ship.new("Submarine", 2)
+     assert_equal false, @board.valid_placement?(submarine, ["A1", "B1"])
+     assert_equal true, @board.valid_placement?(submarine, ["D3", "D4"])
+   end
+
+   def test_render
+     @board.generate_cells
+     cruiser = Ship.new("Cruiser", 3)
+     submarine = Ship.new("Submarine", 2)
+
+     @board.place(cruiser, ["A1", "A2", "A3"])
+     @board.place(submarine, ["D3", "D4"])
+     @board.render(true)
+
+     p1 = "A4"
+    #binding.pry
+
+     @board.render
+     @board.valid_coordinate?(p1)
+     @board.cells[p1].fire_upon
+     @board.render
+
+     p1 = "A3"
+     @board.valid_coordinate?(p1)
+     @board.cells[p1].fire_upon
+     @board.render
+     #
+     p1 = "A2"
+     @board.valid_coordinate?(p1)
+     @board.cells[p1].fire_upon
+     #binding.pry
+     @board.render
+
+     p1 = "A1"
+     @board.valid_coordinate?(p1)
+     @board.cells[p1].fire_upon
+     #binding.pry
+     @board.render
+
+
+
+     #place some ships for testing in pry
+     #@board.place(cruiser, ["A1", "A2", "A3"])
+
+     #faulty logic, Prints M for every cell that doesn't have a ship
+        #need to edit the cell.render method
+     #When ship is Hit once, every cell that the ship is in changes from . to H
+     #need to print on one line
+   end
 
 
 end
