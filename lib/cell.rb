@@ -35,8 +35,8 @@ attr_reader :coordinate, :ship, :misses
     end
   end
 
-  def render(opt_arg = false)
-    if opt_arg == false
+  def render(show_placements = false)
+    if show_placements == false
       if fired_upon? == false
          "."
       elsif fired_upon? == true && empty?
@@ -46,7 +46,7 @@ attr_reader :coordinate, :ship, :misses
       elsif fired_upon? == true && @ship.sunk? == false
          "H"
       end
-    else opt_arg == true
+    else show_placements == true
       if empty? == false && fired_upon? == false #place_shape = true
         "S"
       elsif fired_upon? == false
