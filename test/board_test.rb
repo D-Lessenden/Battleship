@@ -118,13 +118,13 @@ class BoardTest < Minitest::Test
      assert_equal false, @board.valid_placement?(submarine, ["A3", "B3"])
    end
 
-   def test_render
+   def test_render #Need to write separate and clear tests for render.
      @board.generate_cells
      cruiser = Ship.new("Cruiser", 3)
      submarine = Ship.new("Submarine", 2)
-
      @board.place(cruiser, ["A1", "A2", "A3"])
      @board.place(submarine, ["D3", "D4"])
+     binding.pry
      @board.render(true)
      #@board.render
 
