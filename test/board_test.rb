@@ -24,7 +24,7 @@ class BoardTest < Minitest::Test
     assert_equal false, @board.valid_placement?(submarine, ["A2", "A3", "A4"])
   end
 
-  def test_placement_is_on_consecutive_coordinates
+  def test_only_consecutive_cells_are_valid_placement
     @board.generate_cells
     submarine = Ship.new("Submarine", 2)
     cruiser = Ship.new("Cruiser", 3)
@@ -35,7 +35,7 @@ class BoardTest < Minitest::Test
     assert_equal false, @board.valid_placement?(submarine, ["C1", "B1"])
   end
 
-  def test_placement_is_not_diagonal
+  def test_diagonal_placement_invalid
     @board.generate_cells
     submarine = Ship.new("Submarine", 2)
     cruiser = Ship.new("Cruiser", 3)
@@ -49,6 +49,7 @@ class BoardTest < Minitest::Test
      submarine = Ship.new("Submarine", 2)
      cruiser = Ship.new("Cruiser", 3)
 
+     assert_equal false, @board.valid_placement?(submarine, ["D3", "D3"])
      assert_equal true, @board.valid_placement?(submarine, ["B2", "B3"])
      assert_equal true, @board.valid_placement?(cruiser, ["A2", "A3", "A4"])
      assert_equal true, @board.valid_placement?(cruiser, ["A2", "A3", "A4"])
@@ -104,9 +105,7 @@ class BoardTest < Minitest::Test
      assert_equal true, @board.cells["D3"].ship == @board.cells["D4"].ship
    end
 
-
-
-   def test_overlapping_ships?
+   def test_placed_ships_do_not_overlap
      cruiser = Ship.new("Cruiser", 3)
      submarine = Ship.new("Submarine", 2)
 
@@ -118,38 +117,62 @@ class BoardTest < Minitest::Test
      assert_equal false, @board.valid_placement?(submarine, ["A2", "B2"])
      assert_equal false, @board.valid_placement?(submarine, ["A3", "B3"])
    end
-   #
-   # def test_render
-   #      @board.generate_cells
-   #      cruiser = Ship.new("Cruiser", 3)
-   #      submarine = Ship.new("Submarine", 2)
-   #
-   #      @board.place(cruiser, ["A1", "A2", "A3"])
-   #      @board.place(submarine, ["D3", "D4"])
-   #      p1 = "A4"
-   #     #binding.pry
-   #
-   #      @board.render
-   #      @board.valid_coordinate?(p1)
-   #      @board.cells[p1].fire_upon
-   #      @board.render
-   #
-   #      p1 = "A3"
-   #      @board.valid_coordinate?(p1)
-   #      @board.cells[p1].fire_upon
-   #      @board.render
-   #      #
-   #      p1 = "A2"
-   #      @board.valid_coordinate?(p1)
-   #      @board.cells[p1].fire_upon
-   #      #binding.pry
-   #      @board.render
-   #
-   #      p1 = "A1"
-   #      @board.valid_coordinate?(p1)
-   #      @board.cells[p1].fire_upon
-   #      #binding.pry
-   #      @board.render
-   #    end
 
+   def test_render
+     @board.generate_cells
+     cruiser = Ship.new("Cruiser", 3)
+     submarine = Ship.new("Submarine", 2)
+
+     @board.place(cruiser, ["A1", "A2", "A3"])
+     @board.place(submarine, ["D3", "D4"])
+     @board.render(true)
+     #@board.render
+
+     @board.cells["D3"].fire_upon
+     @board.render(true)
+
+     @board.cells["C3"].fire_upon
+     @board.render(true)
+
+     @board.cells["D4"].fire_upon
+
+     @board.render(true)
+    # binding.pry
+     @board.render
+
+    p1 = "A4"
+    #binding.pry
+
+  #   @board.render
+     @board.valid_coordinate?(p1)
+     @board.cells[p1].fire_upon
+     @board.render
+
+     p1 = "A3"
+     @board.valid_coordinate?(p1)
+     @board.cells[p1].fire_upon
+     @board.render
+     @board.render(true)
+
+     #
+     p1 = "A2"
+     @board.valid_coordinate?(p1)
+     @board.cells[p1].fire_upon
+     #binding.pry
+     @board.render
+
+     @board.cells["B4"].fire_upon
+     @board.cells["C2"].fire_upon
+     @board.cells["C1"].fire_upon
+     @board.cells["D1"].fire_upon
+
+
+
+     p1 = "A1"
+     @board.valid_coordinate?(p1)
+     @board.cells[p1].fire_upon
+     #binding.pry
+     @board.render
+     @board.render(true)
+   end
 end

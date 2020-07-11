@@ -1,16 +1,12 @@
+
 class Cell
-attr_reader :coordinate, :ship
+attr_reader :coordinate, :ship, :misses
   def initialize(coordinate)
     @coordinate = coordinate
     @ship
     @misses = 0
     @hit = 0
   end
-
-  # added :ship to attr_reader which negates need for ship method
-  # def ship
-  #   @ship
-  # end
 
   def empty?
     @ship == nil
@@ -20,7 +16,6 @@ attr_reader :coordinate, :ship
     @ship = type
   end
 
-  #removed unnecessary if statement, moved above fired_upon? for readability
   def fire_upon
     if empty?
       @misses += 1
@@ -40,16 +35,29 @@ attr_reader :coordinate, :ship
     end
   end
 
-
-  def render
-    if fired_upon? == false
-       "."
-    elsif fired_upon? == true && empty?
-       "M"
-    elsif fired_upon? == true && @ship.sunk? == true
-       "X"
-    elsif fired_upon? == true && @ship.sunk? == false
-       "H"
+  def render(opt_arg = false)
+    if opt_arg == false
+      if fired_upon? == false
+         "."
+      elsif fired_upon? == true && empty?
+         "M"
+      elsif fired_upon? == true && @ship.sunk? == true
+         "X"
+      elsif fired_upon? == true && @ship.sunk? == false
+         "H"
+      end
+    else opt_arg == true
+      if empty? == false && fired_upon? == false #place_shape = true
+        "S"
+      elsif fired_upon? == false
+        "." #misses == 0
+      elsif fired_upon? == true && empty?
+        "M" #misses>0 || (not empty && hit > 0)
+      elsif fired_upon? == true && @ship.sunk? == true
+        "X" #misses = 0 && @health == 0
+      elsif fired_upon? == true && @ship.sunk? == false
+        "H" #misses == 0 && health > 0
+      end#nested if
     end
-  end
-end
+  end#def render
+end#class
