@@ -36,15 +36,21 @@ attr_reader :coordinate, :ship, :misses
   end
 
 
-  def render
-    if fired_upon? == false
-      p "."
-    elsif fired_upon? == true && empty?
-      p "M"
-    elsif fired_upon? == true && @ship.sunk? == true
-      p "X"
-    elsif fired_upon? == true && @ship.sunk? == false
-      p "H"
-    end
-  end
-end
+  def render(opt_arg = false)
+    if opt_arg == false
+      if fired_upon? == false
+         "."
+      elsif fired_upon? == true && empty?
+         "M"
+      elsif fired_upon? == true && @ship.sunk? == true
+         "X"
+      elsif fired_upon? == true && @ship.sunk? == false
+         "H"
+      end
+    else opt_arg == true
+      if empty? == false #place_shape = true
+        "S"
+      end#nested if
+    end 
+  end#def render
+end#class
