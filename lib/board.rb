@@ -1,3 +1,4 @@
+
 class Board
   attr_reader :cells #added attr_reader w/ :cells so that @board.cells responds as indicated in specs
 
@@ -38,10 +39,8 @@ class Board
 
 
     (ship.length == 2 && coordinates.length == 2 || ship.length == 3 && coordinates.length == 3) &&
-    (((letter.uniq.size == 1 && (num.each_cons(2).all? { |x,y| y == x + 1})) || (num.uniq.size == 1 && ord.each_cons(2).all? { |x,y| y == x + 1})))
-
-
-    #need to add a @cell empty? boolean
+    (((letter.uniq.size == 1 && (num.each_cons(2).all? { |x,y| y == x + 1})) || (num.uniq.size == 1 && ord.each_cons(2).all? { |x,y| y == x + 1}))) &&
+    (coordinates.all? {|cell| @cells[cell].empty?})
   end
 
   def place(ship, coordinates)
@@ -49,47 +48,55 @@ class Board
       coordinates.each do |cord|
         @cells[cord].place_ship(ship)
       end
-
-
-    # if valid_placement?(ship, coordinates) && coordinates.length == 3
-    #     cell_1 = @cells["#{coordinates[0]}"]
-    #     cell_2 = @cells["#{coordinates[1]}"]
-    #     cell_3 = @cells["#{coordinates[2]}"]
-    # else valid_placement?(ship, coordinates) && coordinates.length == 2
-    #     cell_1 = @cells["#{coordinates[0]}"]
-    #     cell_2 = @cells["#{coordinates[1]}"]
     end
   end
 
-  #overlapping ships
-  #cell.empty?
 
 
-#   def render
-#     grid = [
-#     "  1 2 3 4 ",
-#     "A . . . . ",
-#     "B . . . . ",
-#     "C . . . . ",
-#     "D . . . . "
-#     ].join("\n")
-#     puts grid
-#
-#
-#
-#
-#     # board.render
-#     # -> Player 1 coordinates to attack?:
-#     # -> user types "a1"
-#     # cell.fire_upon
-#     # board.render
-# #use valid coordinate?("A1")
-# board.cells["A1"].fire_upon
-#
-#
-#
-#
-#   end
+  def render
+    # @boards.cells each do |cord|
+    #   cord.cell.render
+    #@cell.render #screen shot from 1 04 was set up like this
+
+   #  @board.cells.each do |k, v|
+   #   @board.cells[k].render
+   # end
+
+   a_row = @cells.keys.select{ |keys| keys[0][0] == "A"}
+   b_row = @cells.keys.select{ |keys| keys[0][0] == "B"}
+   c_row = @cells.keys.select{ |keys| keys[0][0] == "C"}
+   d_row = @cells.keys.select{ |keys| keys[0][0] == "D"}
+
+
+   puts " 1 2 3 4"
+   #for each cell (hash key or value) run thru render
+   p "A #{a_row.map { |key| @cells[key].render}.join(" ")} |"
+   p "B #{b_row.map { |key| @cells[key].render}.join(" ")} |"
+   p "C #{c_row.map { |key| @cells[key].render}.join(" ")} |"
+   p "D #{d_row.map { |key| @cells[key].render}.join(" ")} |"
+
+
+  end
+
+
+#   board.render
+# -> Player 1 coordinates to attack?:
+# -> user types "a1"
+# cell.fire_upon
+#@cell.render
+# board.render
+
+  #   p "Player 1: What coordinates do you want to attack?"
+  #   p1 = gets.chomp.upcase!
+  #   @board.valid_coordinate?(p1)
+  #   #if true
+  #     @board.cells[p1].fire_upon
+  #   @cell.render
+
+
+
+
+  #end
 
 
 
