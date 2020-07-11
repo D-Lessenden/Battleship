@@ -115,12 +115,29 @@ class BoardTest < Minitest::Test
      @board.place(cruiser, ["A1", "A2", "A3"])
      @board.place(submarine, ["D3", "D4"])
      @board.render(true)
+     #@board.render
+
+     @board.cells["D3"].fire_upon
+     @board.render(true)
+
+     @board.cells["C3"].fire_upon
+     @board.render(true)
+
+     @board.cells["D4"].fire_upon
+
+
+     @board.render(true)
+    # binding.pry
      @board.render
+
+
+
+
 
      p1 = "A4"
     #binding.pry
 
-     @board.render
+  #   @board.render
      @board.valid_coordinate?(p1)
      @board.cells[p1].fire_upon
      @board.render
@@ -129,12 +146,21 @@ class BoardTest < Minitest::Test
      @board.valid_coordinate?(p1)
      @board.cells[p1].fire_upon
      @board.render
+     @board.render(true)
+
      #
      p1 = "A2"
      @board.valid_coordinate?(p1)
      @board.cells[p1].fire_upon
      #binding.pry
      @board.render
+
+     @board.cells["B4"].fire_upon
+     @board.cells["C2"].fire_upon
+     @board.cells["C1"].fire_upon
+     @board.cells["D1"].fire_upon
+
+
 
      p1 = "A1"
      @board.valid_coordinate?(p1)
@@ -145,13 +171,6 @@ class BoardTest < Minitest::Test
 
 
 
-     #place some ships for testing in pry
-     #@board.place(cruiser, ["A1", "A2", "A3"])
-
-     #faulty logic, Prints M for every cell that doesn't have a ship
-        #need to edit the cell.render method
-     #When ship is Hit once, every cell that the ship is in changes from . to H
-     #need to print on one line
    end
 
 

@@ -48,16 +48,16 @@ attr_reader :coordinate, :ship, :misses
          "H"
       end
     else opt_arg == true
-      if empty? == false #place_shape = true
+      if empty? == false && fired_upon? == false #place_shape = true
         "S"
       elsif fired_upon? == false
-         "."
+        "." #misses == 0
       elsif fired_upon? == true && empty?
-         "M"
+        "M" #misses>0 || (not empty && hit > 0)
       elsif fired_upon? == true && @ship.sunk? == true
-         "X"
+        "X" #misses = 0 && @health == 0
       elsif fired_upon? == true && @ship.sunk? == false
-         "H"
+        "H" #misses == 0 && health > 0
 
 
 
