@@ -59,17 +59,18 @@ class Board
    c_row = @cells.keys.select{ |keys| keys[0] == "C"}
    d_row = @cells.keys.select{ |keys| keys[0] == "D"}
 
-   puts "1 2 3 4"
-   if opt_arg = true
-     p "A| #{a_row.map { |key| @cells[key].render(true)}.join(" ")} |"
-     p "B| #{b_row.map { |key| @cells[key].render(true)}.join(" ")} |"
-     p "C| #{c_row.map { |key| @cells[key].render(true)}.join(" ")} |"
-     p "D| #{d_row.map { |key| @cells[key].render(true)}.join(" ")} |"
-   else
+   puts "    1 2 3 4"
+    if opt_arg == false
      p "A| #{a_row.map { |key| @cells[key].render}.join(" ")} |"
      p "B| #{b_row.map { |key| @cells[key].render}.join(" ")} |"
      p "C| #{c_row.map { |key| @cells[key].render}.join(" ")} |"
      p "D| #{d_row.map { |key| @cells[key].render}.join(" ")} |"
+   elsif opt_arg == true
+     p "A| #{a_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+     p "B| #{b_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+     p "C| #{c_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+     p "D| #{d_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+
    end
 
   end

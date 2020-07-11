@@ -115,6 +115,7 @@ class BoardTest < Minitest::Test
      @board.place(cruiser, ["A1", "A2", "A3"])
      @board.place(submarine, ["D3", "D4"])
      @board.render(true)
+     @board.render
 
      p1 = "A4"
     #binding.pry
@@ -140,6 +141,7 @@ class BoardTest < Minitest::Test
      @board.cells[p1].fire_upon
      #binding.pry
      @board.render
+     @board.render(true)
 
 
 

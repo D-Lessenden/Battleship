@@ -50,7 +50,21 @@ attr_reader :coordinate, :ship, :misses
     else opt_arg == true
       if empty? == false #place_shape = true
         "S"
+      elsif fired_upon? == false
+         "."
+      elsif fired_upon? == true && empty?
+         "M"
+      elsif fired_upon? == true && @ship.sunk? == true
+         "X"
+      elsif fired_upon? == true && @ship.sunk? == false
+         "H"
+
+
+
+
+
+
       end#nested if
-    end 
+    end
   end#def render
 end#class
