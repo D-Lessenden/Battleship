@@ -19,8 +19,14 @@ class Board
     @cells
   end #generate_cells
 
-  def valid_coordinate?(cord)
+def valid_coordinate?(cord)#Add conditional verifying
     @cells.has_key?(cord)
+  end
+
+  def verify_and_fire(cord)
+    if valid_coordinate?(cord)
+      @cells[cord].fire_upon
+    end
   end
 
   def valid_placement?(ship, coordinates)
