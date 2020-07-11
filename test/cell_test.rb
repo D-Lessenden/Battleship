@@ -64,7 +64,7 @@ class CellTest < Minitest::Test
 
     @cell2.fire_upon
     assert_equal "H", @cell2.render
-
+  
     @cell2.fire_upon
     @cell2.fire_upon
     assert_equal "X", @cell2.render
