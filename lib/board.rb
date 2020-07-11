@@ -47,19 +47,19 @@ class Board
     end
   end
 
-  def render(opt_arg = false)
+  def render(show_placements = false)
    a_row = @cells.keys.select{ |keys| keys[0] == "A"}
    b_row = @cells.keys.select{ |keys| keys[0] == "B"}
    c_row = @cells.keys.select{ |keys| keys[0] == "C"}
    d_row = @cells.keys.select{ |keys| keys[0] == "D"}
 
    puts "    1 2 3 4"
-    if opt_arg == false
+    if show_placements == false
      p "A| #{a_row.map { |key| @cells[key].render}.join(" ")} |"
      p "B| #{b_row.map { |key| @cells[key].render}.join(" ")} |"
      p "C| #{c_row.map { |key| @cells[key].render}.join(" ")} |"
      p "D| #{d_row.map { |key| @cells[key].render}.join(" ")} |"
-   elsif opt_arg == true
+   elsif show_placements == true
      p "A| #{a_row.map { |key| @cells[key].render(true)}.join(" ")} |"
      p "B| #{b_row.map { |key| @cells[key].render(true)}.join(" ")} |"
      p "C| #{c_row.map { |key| @cells[key].render(true)}.join(" ")} |"
