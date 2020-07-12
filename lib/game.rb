@@ -4,6 +4,10 @@ class Game
   def initialize
     @board = Board.new
     @board.generate_cells
+    @cpu_cruiser = Ship.new("Cruiser", 3)
+    @cpu_sub = Ship.new("Submarine", 2)
+    @sub = Ship.new("Submarine", 2)
+    @cruiser = Ship.new("Cruiser", 3)
   end
 
   # def main_menu
@@ -78,9 +82,9 @@ class Game
       coords.sort!
     end
 
-    cpu_cruiser = Ship.new("Cruiser", 3)
-    @board.place(cpu_cruiser, coords)
-    @board.render(true) #take this out, using it for testing
+  #  @cpu_cruiser = Ship.new("Cruiser", 3)
+    @board.place(@cpu_cruiser, coords)
+    #@board.render(true) #take this out, using it for testing
   end
 
   def cpu_place_sub
@@ -100,17 +104,33 @@ class Game
       coords.sort!
     end
 
-    cpu_sub = Ship.new("Submarine", 2)
-    @board.place(cpu_sub, coords)
-    @board.render(true) #take this out, using it for testing
+  #  @cpu_sub = Ship.new("Submarine", 2)
+  #  binding.pry
+    @board.place(@cpu_sub, coords)
+    #@board.render(true) #take this out, using it for testing
   end
 
   def cpu_fire
-    binding.pry
+    #binding.pry
     cpu_fire = @board.cells[@board.cells.keys.sample]
     cpu = cpu_fire.coordinate
-    @board.cells[cpu].fire_upon
-    #test if H, M, or w/e. test if can hit same cell twice
+    # if @board.valid_coordinate?(cpu)
+    #   @board.verify_and_fire(cpu)
+    #   p cpu
+    # elsif @board.valid_coordinate?(cpu)
+    #   cpu_fire = @board.cells[@board.cells.keys.sample]
+    #   cpu = cpu_fire.coordinate
+    #   @board.verify_and_fire(cpu)
+    # end
+
+    until @board.verify_and_fire(cpu)
+      cpu_fire = @board.cells[@board.cells.keys.sample]
+      cpu = cpu_fire.coordinate
+      @board.verify_and_fire(cpu)
+      p cpu
+    # @board.verify_and_fire(cpu)
+    # p cpu
+  end
   end
 
   def turn_result
@@ -119,13 +139,17 @@ class Game
   end
 
 
-  # def game_over
-  #   if user ships sunk variable = sub health + cruiser health
-  #variable == 0 game over
-  #     puts "I won!"
-  #   elsif cpu ships sunk
-  #     puts "You won!"
-  # end
+   def human_win
+     (@cpu_sub.sunk? == true )&& (@cpu_cruiser.sunk? == true)
+     p "You won!" #if call @cpu_sub.hit it takes away from health but not with    @board.cells["A1"].fire_upon
+   #need to insert this at the end of every turn
+   end
+
+   def cpu_win
+     (@sub.sunk? == true) && (@cruiser.sunk? == true)
+     p "Computer win!"
+   end
+
 
 
 end#class
