@@ -20,11 +20,11 @@ class Board
   end #generate_cells
 
 def valid_coordinate?(cord)#Add conditional verifying
-    @cells.has_key?(cord)  && @cells[cord].misses == 0 && @cells[cord].hit == 0
+    @cells.has_key?(cord) && @cells[cord].misses == 0 && @cells[cord].hit == 0
   end
 
   def verify_and_fire(cord)
-    if valid_coordinate?(cord)
+    if valid_coordinate?(cord) 
       @cells[cord].fire_upon
     else
       false
