@@ -20,7 +20,7 @@ class Board
   end #generate_cells
 
 def valid_coordinate?(cord)#Add conditional verifying
-    @cells.has_key?(cord)
+    @cells.has_key?(cord)  && misses == 0 && hit == 0
   end
 
   def verify_and_fire(cord)
