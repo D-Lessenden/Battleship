@@ -2,13 +2,13 @@ require 'pry'
 class Game
 
   def initialize
-    @board = Board.new
-    @board.generate_cells
+    # @board = Board.new
+    # @board.generate_cells
     # @cruiser = Ship.new("Cruiser", 3)
     # @submarine = Ship.new("Submarine", 2)
   end
 
-  # def main_menu
+   # def main_menu
   #   puts "Welcome to BATTLESHIP\nEnter p to play. Enter q to quit"
   #   @initial_input = gets.chomp!
   #     if @initial_input == "p"
@@ -37,7 +37,7 @@ class Game
   #     elsif @initial_input != "p" || "q"
   #       puts "Enter p to play. Enter q to quit"
   #     end
-  # end
+   # end
   #
   def game_board
     p "=============COMPUTER BOARD============="
@@ -54,22 +54,18 @@ class Game
     # @board.check_user_input(shot) not working as method????
       until @board.valid_coordinate?(shot) == true
       puts "Those are invalid coordinates. Please try again."
-      shot = gets.chomp!.upcase
+      shot = gets.chomp!.upcase!
       end
     @board.verify_and_fire(shot)
     #build helper method for computer fire -D
-      if @board.cells[shot].empty? && (@board.cells[shot].misses == 1)
-        "Your shot missed"
-      elsif @board.cells[shot].empty? && (@board.cells[shot].misses > 1)
-        "You already missed a shot on this cell, check your board :)"
-      elsif @board.cells[shot].ship.sunk? == true && (@board.cells[shot].hit == 1)
-        "You hit and sunk a ship!"
-      elsif (@board.cells[shot].ship.sunk? == true) && (@board.cells[shot].hit > 1)
-        "You hit a ship you already sunk, oh the humanity!"
-      elsif (@board.cells[shot].hit == 1)
+      if false
+        "You already shot at this coordinate, check your board :)"
+      # elsif @board.cells[shot].empty? && (@board.cells[shot].misses == 1)
+      #   "Your shot missed"
+      # elsif @board.cells[shot].ship.sunk? == true && (@board.cells[shot].hit == 1)
+      #   "You hit and sunk a ship!"
+      else
         "You hit a ship!"
-      elsif (@board.cells[shot].hit > 1) && (@board.cells[shot].sunk? == false)
-        "You already hit a ship here, check your board :)"
       end
     #If cell already fired upon, user notified
   end
