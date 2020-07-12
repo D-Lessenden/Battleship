@@ -1,9 +1,11 @@
 require "pry"
 class Game
-
+attr_reader :board
   def initialize
     @board = Board.new
+  #  @cpu_board = Board.new
     @board.generate_cells
+  #  @cpu_board.generate_cells
     @cpu_cruiser = Ship.new("Cruiser", 3)
     @cpu_sub = Ship.new("Submarine", 2)
     @sub = Ship.new("Submarine", 2)
@@ -49,36 +51,33 @@ class Game
   end
 
   def turn
-    # @board.place(@cruiser, ["A1", "A2", "A3"])
-    game_board
-    puts "Enter the coordinate for your shot:"
-    shot = gets.chomp.upcase!
-    #shot = gets.chomp!.upcase
-    # @board.check_user_input(shot) not working as method????
-      until @board.valid_coordinate?(shot) == true
-      puts "Those are invalid coordinates. Please try again."
+  # @board.place(@cruiser, ["A1", "A2", "A3"])
+  game_board
+  puts "Enter the coordinate for your shot:"
+  shot = gets.chomp!.upcase
+  # @board.check_user_input(shot) not working as method????
+    until @board.valid_coordinate?(shot) == true
+      p "Those are invalid coordinates. Please try again."
       shot = gets.chomp!.upcase
-      end
-    @board.verify_and_fire(shot)
-     #helper method to verify verify_and_fire -P
-    #build helper method for computer fire -D
-    #steal from cell.render for results of shots
-    binding.pry
-      if @board.cells[shot].empty? == false && (@board.cells[shot].misses == 1)
+    end
+    #need to change valid_coord but if we do it breaks the cpu_fire method
+    until @board.cells[shot].fired_upon? == false
+      p "You already fired at that space."
+      shot = gets.chomp!.upcase
+    end
+  @board.verify_and_fire(shot) # miss sunk hit
+  #build helper method for computer fire -D
+      # if @board.cells[shot].
+      #    "You already fired at this spot"
+      if @board.cells[shot].empty? == true
         "Your shot missed"
-      elsif @board.cells[shot].empty? && (@board.cells[shot].misses > 1)
-        "You already missed a shot on this cell, check your board :)"
-      elsif @board.cells[shot].ship.sunk? == true && (@board.cells[shot].hit == 1)
-        "You hit and sunk a ship!"
-      elsif (@board.cells[shot].ship.sunk? == true) && (@board.cells[shot].hit > 1)
-        "You hit a ship you already sunk, oh the humanity!"
-      elsif (@board.cells[shot].hit == 1)
-        "You hit a ship!"
-      elsif (@board.cells[shot].hit > 1) && (@board.cells[shot].sunk? == false)
-        "You already hit a ship here, check your board :)"
+      elsif @board.cells[shot].fired_upon? == true && @board.cells[shot].ship.sunk? == true
+         "Sunk"
+      elsif @board.cells[shot].fired_upon? == true && @board.cells[shot].ship.sunk? == false
+         "Hit"
       end
-    #If cell already fired upon, user notified
-  end
+  #If cell already fired upon, user notified
+end
 
 
   def cpu_place_cruiser
@@ -126,7 +125,7 @@ class Game
 
   #  @cpu_sub = Ship.new("Submarine", 2)
   #  binding.pry
-    @board.place(@cpu_sub, coords)
+  #  @board.place(@cpu_sub, coords)
     #@board.render(true) #take this out, using it for testing
   end
 
@@ -134,13 +133,20 @@ class Game
   #  binding.pry
     valid_cells = @board.cells.select do |k, v|
       @board.valid_coordinate?(k)
+      #@board.verify_and_fire(k) #if cells[cord].misses is under verify_and_fire
     end
 
     cpu_fire = valid_cells[valid_cells.keys.sample]
     cpu = cpu_fire.coordinate
-
     @board.verify_and_fire(cpu)
-    p cpu
+
+  if @board.cells[cpu].empty? == true
+    "Miss!? Are you moving your ships?"
+  elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == true
+    "One down. One to go."
+  elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == false
+    "Ha! I got you!"
+    end
   end
 
 

@@ -10,8 +10,6 @@ class GameTest < Minitest::Test
 
   def setup
     @game = Game.new
-    @board = Board.new
-    @board.generate_cells
     @cpu_cruiser = Ship.new("Cruiser", 3)
     @cpu_sub = Ship.new("Submarine", 2)
     @sub = Ship.new("Submarine", 2)
@@ -29,59 +27,133 @@ class GameTest < Minitest::Test
 
 
   def test_cpu_fire
-    #skip
-    #@board.cells["A2"]
-    @board.verify_and_fire("A1")
-    @board.verify_and_fire("A2")
-    @board.verify_and_fire("A3")
-    @board.verify_and_fire("A4")
-    @board.verify_and_fire("B1")
-    @board.verify_and_fire("B2")
-    @board.verify_and_fire("B3")
-    @board.verify_and_fire("B4")
-    @board.verify_and_fire("C1")
-    @board.verify_and_fire("C2")
-    @board.verify_and_fire("C3")
-    @board.verify_and_fire("C4")
-    @board.verify_and_fire("D1")
-    @board.verify_and_fire("D2")
-    @board.verify_and_fire("D3")
+    skip
+    @game.board.verify_and_fire("A1")
+    @game.board.verify_and_fire("A2")
+    @game.board.verify_and_fire("A3")
+    @game.board.verify_and_fire("A4")
+    @game.board.verify_and_fire("B1")
+    @game.board.verify_and_fire("B2")
+    @game.board.verify_and_fire("B3")
+    @game.board.verify_and_fire("B4")
+    @game.board.verify_and_fire("C1")
+    @game.board.verify_and_fire("C2")
+    @game.board.verify_and_fire("C3")
+    @game.board.verify_and_fire("C4")
+    @game.board.verify_and_fire("D1")
+    @game.board.verify_and_fire("D2")
+    @game.board.verify_and_fire("D3")
     assert_equal "D4", @game.cpu_fire
   end
-  #
+
+  def test_cpu_miss
+    @game.board.place(@cpu_sub, ["D3", "D4"])
+    assert_equal "Miss!? Are you moving your ships?", @game.cpu_fire
+  end
+
+  def test_cpu_hit
+    @game.board.verify_and_fire("A1")
+    @game.board.verify_and_fire("A2")
+    @game.board.verify_and_fire("A3")
+    @game.board.verify_and_fire("A4")
+    @game.board.verify_and_fire("B1")
+    @game.board.verify_and_fire("B2")
+    @game.board.verify_and_fire("B3")
+    @game.board.verify_and_fire("B4")
+    @game.board.verify_and_fire("C1")
+    @game.board.verify_and_fire("C2")
+    @game.board.verify_and_fire("C3")
+    @game.board.verify_and_fire("C4")
+    @game.board.verify_and_fire("D1")
+    @game.board.verify_and_fire("D2")
+    @game.board.place(@cpu_sub, ["D3", "D4"])
+    assert_equal "Ha! I got you!", @game.cpu_fire
+  end
+
+  def test_cpu_sink
+    @game.board.place(@cpu_sub, ["D3", "D4"])
+    @game.board.verify_and_fire("A1")
+    @game.board.verify_and_fire("A2")
+    @game.board.verify_and_fire("A3")
+    @game.board.verify_and_fire("A4")
+    @game.board.verify_and_fire("B1")
+    @game.board.verify_and_fire("B2")
+    @game.board.verify_and_fire("B3")
+    @game.board.verify_and_fire("B4")
+    @game.board.verify_and_fire("C1")
+    @game.board.verify_and_fire("C2")
+    @game.board.verify_and_fire("C3")
+    @game.board.verify_and_fire("C4")
+    @game.board.verify_and_fire("D1")
+    @game.board.verify_and_fire("D2")
+    @game.board.verify_and_fire("D3")
+    assert_equal "One down. One to go.", @game.cpu_fire
+  end
+
+
   def test_game_over_p1_win
-    @cpu_cruiser.hit
-    @cpu_cruiser.hit
-    @cpu_cruiser.hit
-    @cpu_sub.hit
-    @cpu_sub.hit
+    @game.board.place(@cpu_sub, ["B1", "B2"])
+    @game.board.place(@cpu_cruiser, ["A1", "A2", "A3"])
+    @game.board.verify_and_fire("A1")
+    @game.board.verify_and_fire("A2")
+    @game.board.verify_and_fire("A3")
+    @game.board.verify_and_fire("B1")
+    @game.board.verify_and_fire("B2")
     assert_equal true, @cpu_sub.sunk?
     assert_equal true, @cpu_cruiser.sunk?
     assert_equal "You won!", @game.human_win
   end
 
   def test_game_over_cpu_win
-    @cruiser.hit
-    @cruiser.hit
-    @cruiser.hit
-    @sub.hit
-    @sub.hit
+    @game.board.place(@sub, ["B1", "B2"])
+    @game.board.place(@cruiser, ["A1", "A2", "A3"])
+    @game.board.verify_and_fire("A1")
+    @game.board.verify_and_fire("A2")
+    @game.board.verify_and_fire("A3")
+    @game.board.verify_and_fire("B1")
+    @game.board.verify_and_fire("B2")
     assert_equal true, @sub.sunk?
     assert_equal true, @cruiser.sunk?
     assert_equal "Computer win!", @game.cpu_win
   end
 
-  def test
-      @cruiser = Ship.new("Cruiser", 3)
-  end
 
-  def test_turn_human_fire
+  def test_turn_human_fire_miss
     skip
-    @board.generate_cells
-    @board.place(@sub, ["A1", "A2"])
-    @board.render
-
+    @game.board.place(@sub, ["A1", "A2"])
+    @game.board.render
     assert_equal "Your shot missed", @game.turn
   end
+
+  def test_turn_human_fire_sink
+    skip
+    @game.board.place(@sub, ["A1", "A2"])
+    @game.board.render
+    @game.board.verify_and_fire("A1")
+    assert_equal "Sunk", @game.turn
+  end
+
+  def test_turn_human_fire_hit
+    skip
+    @game.board.place(@sub, ["A1", "A2"])
+    @game.board.render
+    assert_equal "Hit", @game.turn
+  end
+
+
+
+  def test_turn
+    #skip
+    # game = Game.new
+    # # @board = Board.new
+    # # @board.generate_cells
+    # cruiser = Ship.new("Cruiser", 3)
+    # submarine = Ship.new("Submarine", 2)
+    @game.board.place(@cruiser, ["A1", "A2", "A3"])
+    binding.pry
+    @game.turn
+  end
+
+
 
 end
