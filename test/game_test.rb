@@ -22,14 +22,15 @@ class GameTest < Minitest::Test
   #   assert_instance_of Game, @game
   # end
 
-def test_turn
+  def test_turn
     @game = Game.new
     @board = @game.board
-    # @board.cells["A1"].fire_upon
+
     @game.main_menu
-    binding.pry
-    @game.turn
-    assert_equal "You already fired at this spot", @game.turn
+
+    p @game.turn
+
+    assert_equal "You already fired on this spot", @game.turn
   end
 
 end

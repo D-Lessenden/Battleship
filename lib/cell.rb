@@ -1,14 +1,15 @@
 
 class Cell
-attr_reader :coordinate, :ship, :fired_shots_recieved
+  attr_reader :coordinate, :ship, :fired_shots_recieved
+
   def initialize(coordinate)
     @coordinate = coordinate
-    @ship
-    @fired_shots_recieved = 0
+    @ship = nil
+    @hit_result = nil
   end
 
   def empty?
-    @ship == nil
+    @ship.nil?
   end
 
   def place_ship(type)
@@ -16,20 +17,22 @@ attr_reader :coordinate, :ship, :fired_shots_recieved
   end
 
   def fire_upon
+    return :already_fired_upon if fired_upon?
+
     if empty?
-      @fired_shots_recieved += 1
-    elsif @ship != nil
+      @hit_result = :miss
+    else
       @ship.hit
-      @fired_shots_recieved += 1
+
+      puts ''
+      p @ship
+      puts ''
+      @hit_result = :hit
     end
   end
 
   def fired_upon?
-    if @fired_shots_recieved == 0
-      false
-    elsif @fired_shots_recieved > 0
-      true
-    end
+    !@hit_result.nil?
   end
 
   def render(show_placements = false)

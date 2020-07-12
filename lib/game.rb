@@ -48,25 +48,37 @@ class Game
   end
 
   def turn
-    # @board.place(@cruiser, ["A1", "A2", "A3"])
     game_board
     puts "Enter the coordinate for your shot:"
-    shot = gets.chomp!.upcase
-    # @board.check_user_input(shot) not working as method????
-      until @board.valid_coordinate?(shot) == true
+    shot = gets.chomp.upcase
+
+    until @board.valid_coordinate?(shot) == true
       puts "Those are invalid coordinates. Please try again."
-      shot = gets.chomp!.upcase!
-      end
-    @board.verify_and_fire(shot)
-    # build helper method for computer fire -D
-      if @board.cells[shot].fired_shots_recieved > 1
-        "You already fired on this spot"
-      elsif @board.cells[shot].empty? == false && @board.cells[shot].fired_shots_recieved == 1
-        "Hit"
-      elsif @board.cells[shot].empty? == true
-        "Miss"
-      end
-    #If cell already fired upon, user notified
+      shot = gets.chomp.upcase
+    end
+
+    result = @board.verify_and_fire(shot)
+    if result == :already_fired_upon
+      "You already fired on this spot"
+    elsif result == :hit
+      "Hit"
+    elsif result == :miss
+      "Miss"
+    else
+      "invalid coordinate"
+    end
+
+
+    # @board.verify_and_fire(shot)
+    # # build helper method for computer fire -D
+    #   if @board.cells[shot].fired_shots_recieved > 1
+    #     "You already fired on this spot"
+    #   elsif @board.cells[shot].empty? == false && @board.cells[shot].fired_shots_recieved == 1
+    #     "Hit"
+    #   elsif @board.cells[shot].empty? == true
+    #     "Miss"
+    #   end
+    # #If cell already fired upon, user notified
   end
 
 
