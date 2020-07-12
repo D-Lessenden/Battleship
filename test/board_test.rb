@@ -175,4 +175,5 @@ class BoardTest < Minitest::Test
      @board.render
      @board.render(true)
    end
+
 end
