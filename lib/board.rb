@@ -26,6 +26,8 @@ def valid_coordinate?(cord)#Add conditional verifying
   def verify_and_fire(cord)
     if valid_coordinate?(cord)
       @cells[cord].fire_upon
+    else
+      false
     end
   end
 
