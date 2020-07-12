@@ -124,7 +124,7 @@ class BoardTest < Minitest::Test
      submarine = Ship.new("Submarine", 2)
      @board.place(cruiser, ["A1", "A2", "A3"])
      @board.place(submarine, ["D3", "D4"])
-     binding.pry
+    # binding.pry
      @board.render(true)
      #@board.render
 
@@ -174,6 +174,17 @@ class BoardTest < Minitest::Test
      #binding.pry
      @board.render
      @board.render(true)
+   end
+
+   def test_valid_coordinate?
+     @board.generate_cells
+     assert_equal true, @board.valid_coordinate?("A1")
+     @board.cells["A1"].fire_upon
+     assert_equal false, @board.valid_coordinate?("A1")
+
+     # @board.cells["A2"].fire_upon
+     # @board.cells["A2"].fire_upon
+     # assert_equal false, @board.valid_coordinate?("A2")
    end
 
 end
