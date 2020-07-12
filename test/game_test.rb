@@ -46,10 +46,6 @@ class GameTest < Minitest::Test
     @board.verify_and_fire("D1")
     @board.verify_and_fire("D2")
     @board.verify_and_fire("D3")
-     #binding.pry
-    # @board.verify_and_fire("D1")
-
-
     assert_equal "D4", @game.cpu_fire
   end
   #
@@ -73,6 +69,19 @@ class GameTest < Minitest::Test
     assert_equal true, @sub.sunk?
     assert_equal true, @cruiser.sunk?
     assert_equal "Computer win!", @game.cpu_win
+  end
+
+  def test
+      @cruiser = Ship.new("Cruiser", 3)
+  end
+
+  def test_turn_human_fire
+    skip
+    @board.generate_cells
+    @board.place(@sub, ["A1", "A2"])
+    @board.render
+
+    assert_equal "Your shot missed", @game.turn
   end
 
 end
