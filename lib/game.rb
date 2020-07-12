@@ -114,8 +114,8 @@ class Game
   end
 
   def turn_result
-    print user results
-    print cpu results
+    # print user results
+    # print cpu results
   end
 
 
