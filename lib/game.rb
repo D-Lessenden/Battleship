@@ -58,16 +58,14 @@ class Game
       shot = gets.chomp!.upcase!
       end
     @board.verify_and_fire(shot)
-    #build helper method for computer fire -D
-        # if @board.cells[shot].
-        #    "You already fired at this spot"
-        if @board.cells[shot].fired_upon? == true && @board.cells[shot].ship.sunk? == true
-           "Sunk"
-        elsif @board.cells[shot].fired_upon? == true && @board.cells[shot].ship.sunk? == false
-           "Hit"
-        elsif @board.cells[shot].empty? == true
-          "Miss"
-        end
+    # build helper method for computer fire -D
+      if @board.cells[shot].fired_shots_recieved > 1
+        "You already fired on this spot"
+      elsif @board.cells[shot].empty? == false && @board.cells[shot].fired_shots_recieved == 1
+        "Hit"
+      elsif @board.cells[shot].empty? == true
+        "Miss"
+      end
     #If cell already fired upon, user notified
   end
 
@@ -88,5 +86,4 @@ class Game
   #   elsif cpu ships sunk
   #     puts "You won!"
   # end
-
 end
