@@ -1,6 +1,8 @@
 class Game
 
   def initialize
+    @board = Board.new
+    @board.generate_cells
   end
 
   def main_menu
@@ -14,20 +16,17 @@ class Game
         puts "  1 2 3 4\nA . . . .\nB . . . .\nC . . . .\nD . . . ."
         puts "Enter the squares for the Cruiser (3 spaces):"
         @user_cruiser_placement = gets.chomp.upcase!
-        @board.valid_placement?
-        if true @board.valid_placement?
-        elsif false
-        end
-          puts "Those are invalid coordinates. Please try again."
+        @board.place(cruiser, @user_cruiser_placement)
 
-        puts "Enter the squares for the Sub (2 spaces):"
+          puts "Those are invalid coordinates. Please try again."
+          puts "Enter the squares for the Sub (2 spaces):"
         @user_sub_placement = gets.chomp.upcase!
         if true @board.valid_placement?
         elsif false
           puts "Those are invalid coordinates. Please try again."
         end
 
-        #ship_placements(method)
+        #ship_placements(method) should verify valid coordinate, transforms data to array, and places ship
         @board.render(true)
 
       elsif @initial_input == "q"
@@ -37,7 +36,29 @@ class Game
       end
   end
 
+  def game_board
+    p "=============COMPUTER BOARD============="
+    @board.render
+    p "==============PLAYER BOARD=============="
+    @board.render(true)
+  end
 
+  def turn
+    game_board
+    puts "Enter the coordinate for your shot:"
+    shot = gets.chomp.upcase!
+    @board.verify_and_fire(shot)
+     #helper method to verify verify_and_fire -P
+    #build helper method for computer fire -D
+    #steal from cell.render for results of shots
+    #If cell already fired upon, user notified
+  end
 
+  def game_over
+    if user ships sunk
+      puts "I won!"
+    elsif cpu ships sunk
+      puts "You won!"
+  end
 
 end
