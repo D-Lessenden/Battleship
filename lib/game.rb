@@ -6,40 +6,66 @@ class Game
     @board.generate_cells
     @cruiser = Ship.new("Cruiser", 3)
     @submarine = Ship.new("Submarine", 2)
+
   end
 
    def main_menu
-      @board.place(@cruiser, ["A1", "A2", "A3"])
-    # puts "Welcome to BATTLESHIP\nEnter p to play. Enter q to quit"
-    # @initial_input = gets.chomp!
-    #   if @initial_input == "p"
-    #     puts "I have laid out my ships on the grid.\n
-    #     You now need to lay out your two ships.\n
-    #     The Cruiser is three units long and the Submarine is two units long."
-    #     #sleep(?)
-    #     puts "  1 2 3 4\nA . . . .\nB . . . .\nC . . . .\nD . . . ."
-    #     puts "Enter the squares for the Cruiser (3 spaces):"
-    #     @user_cruiser_placement = gets.chomp.upcase!
-    #     @board.place(cruiser, @user_cruiser_placement)
-    #
-    #       puts "Those are invalid coordinates. Please try again."
-    #       puts "Enter the squares for the Sub (2 spaces):"
-    #     @user_sub_placement = gets.chomp.upcase!
-    #     if true @board.valid_placement?
-    #     elsif false
-    #       puts "Those are invalid coordinates. Please try again."
-    #     end
-    #
-    #     #ship_placements(method) should verify valid coordinate, transforms data to array, and places ship
-    #     @board.render(true)
-    #
-    #   elsif @initial_input == "q"
-    #     puts "Bye Felicia"
-    #   elsif @initial_input != "p" || "q"
-    #     puts "Enter p to play. Enter q to quit"
-    #   end
+    puts "Welcome to BATTLESHIP\nEnter p to play. Enter q to quit"
+    @initial_input = gets.chomp!.upcase
+      if @initial_input == "P"
+        instructions
+        # puts "Enter the squares for the Sub (2 spaces):"
+        # @user_sub_placement = gets.chomp.upcase!
+        # if true @board.valid_placement?
+        # elsif false
+        #   puts "Those are invalid coordinates. Please try again."
+        # end
+        #
+        # #ship_placements(method) should verify valid coordinate, transforms data to array, and places ship
+        # @board.render(true)
+
+      elsif @initial_input == "Q"
+          puts "Bye Felicia"
+      end
    end
   #
+
+  def instructions
+    puts "I have laid out my ships on the grid.\n
+    You now need to lay out your two ships.\n
+    The Cruiser is three units long and the Submarine is two units long."
+    #sleep(?)
+    puts "  1 2 3 4\nA . . . .\nB . . . .\nC . . . .\nD . . . ."
+    puts "Enter the squares for the Sub (2 spaces):"
+    user_input = gets.chomp.upcase
+    placement = []
+    placement << user_input.split(" ")
+    placement.flatten!
+    until @board.valid_placement?(@submarine, placement) == true
+      puts "Those are invalid coordinates. Please try again."
+      user_input = gets.chomp.upcase
+      placement = []
+      placement << user_input.split(" ")
+      placement.flatten!
+    end
+    @board.place(@submarine, placement)
+
+    puts "Enter the squares for the Cruiser (3 spaces):"
+    user_input = gets.chomp.upcase
+    placement = []
+    placement << user_input.split(" ")
+    placement.flatten!
+      until @board.valid_placement?(@cruiser, placement) == true
+        puts "Those are invalid coordinates. Please try again."
+        user_input = gets.chomp.upcase
+        placement = []
+        placement << user_input.split(" ")
+        placement.flatten!
+      end
+    @board.place(@cruiser, placement)
+    @board.render(true)
+  end
+
   def game_board
     p "=============COMPUTER BOARD============="
     @board.render
@@ -55,7 +81,7 @@ class Game
     # @board.check_user_input(shot) not working as method????
       until @board.valid_coordinate?(shot) == true
       puts "Those are invalid coordinates. Please try again."
-      shot = gets.chomp!.upcase!
+      shot = gets.chomp!.upcase
       end
     @board.verify_and_fire(shot)
     # build helper method for computer fire -D
@@ -69,14 +95,6 @@ class Game
     #If cell already fired upon, user notified
   end
 
-
-  # def check_user_input(user_input)
-  #   until @board.valid_coordinate?(shot) == true
-  #     puts "Those are invalid coordinates. Please try again."
-  #     shot = gets.chomp!.upcase
-  #   end
-  # end
-  # Doesn't work as method
 
 
 
