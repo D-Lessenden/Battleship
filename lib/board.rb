@@ -19,12 +19,18 @@ class Board
     @cells
   end #generate_cells
 
-def valid_coordinate?(cord)#Add conditional verifying
-    @cells.has_key?(cord)
+def valid_coordinate?(cord)
+    @cells.has_key?(cord) && @cells[cord].misses == 0 && @cells[cord].hit == 0
+  end
+
+  def new
+    @cells.has_key?(cord) && @cells[cord].misses == 0 && @cells[cord].hit == 0
+
   end
 
   def verify_and_fire(cord)
-    if valid_coordinate?(cord) && @cells[cord].fired_upon? == false
+
+    if valid_coordinate?(cord) #&& @cells[cord].misses == 0 && @cells[cord].hit == 0
       @cells[cord].fire_upon
     elsif valid_coordinate?(cord) && @cells[cord].fired_upon? == false
       @cells[cord].fired_shots_recieved += 1
