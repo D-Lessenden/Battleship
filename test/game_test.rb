@@ -8,6 +8,7 @@ require 'pry'
 
 class GameTest < Minitest::Test
 
+
   def setup
     @game = Game.new
     @cpu_cruiser = Ship.new("Cruiser", 3)
@@ -18,6 +19,7 @@ class GameTest < Minitest::Test
 
   def test_it_exists
     assert_instance_of Game, @game
+
   end
 
   def test_cpu_place_cruiser

@@ -29,10 +29,11 @@ def valid_coordinate?(cord)
   end
 
   def verify_and_fire(cord)
+
     if valid_coordinate?(cord) #&& @cells[cord].misses == 0 && @cells[cord].hit == 0
       @cells[cord].fire_upon
-    else
-      false
+    elsif valid_coordinate?(cord) && @cells[cord].fired_upon? == false
+      @cells[cord].fired_shots_recieved += 1
     end
   end
 
