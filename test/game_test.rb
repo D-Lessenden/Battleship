@@ -23,11 +23,13 @@ class GameTest < Minitest::Test
   def test_cpu_place_cruiser
     refute nil, @game.cpu_place_cruiser
     refute nil, @game.cpu_place_sub
+    #@game.cpu_board.place(@cpu_cruiser, ["A1", "A2", "A3"])
+    #assert_equal "1", @game.cpu_board.render
   end
 
 
   def test_cpu_fire
-    skip
+  #  skip
     @game.board.verify_and_fire("A1")
     @game.board.verify_and_fire("A2")
     @game.board.verify_and_fire("A3")
@@ -43,7 +45,8 @@ class GameTest < Minitest::Test
     @game.board.verify_and_fire("D1")
     @game.board.verify_and_fire("D2")
     @game.board.verify_and_fire("D3")
-    assert_equal "D4", @game.cpu_fire
+    #assert_equal "D4", @game.cpu_fire
+    assert_equal "Miss!? Are you moving your ships?", @game.cpu_fire
   end
 
   def test_cpu_miss
@@ -52,6 +55,7 @@ class GameTest < Minitest::Test
   end
 
   def test_cpu_hit
+    @game.board.place(@cpu_sub, ["D3", "D4"])
     @game.board.verify_and_fire("A1")
     @game.board.verify_and_fire("A2")
     @game.board.verify_and_fire("A3")
@@ -66,7 +70,6 @@ class GameTest < Minitest::Test
     @game.board.verify_and_fire("C4")
     @game.board.verify_and_fire("D1")
     @game.board.verify_and_fire("D2")
-    @game.board.place(@cpu_sub, ["D3", "D4"])
     assert_equal "Ha! I got you!", @game.cpu_fire
   end
 
@@ -149,10 +152,12 @@ class GameTest < Minitest::Test
     # # @board.generate_cells
     # cruiser = Ship.new("Cruiser", 3)
     # submarine = Ship.new("Submarine", 2)
-    @game.board.place(@cruiser, ["A1", "A2", "A3"])
+    @game.board.place(@cruiser, ["A1", "B1", "C1"])
     binding.pry
     @game.turn
   end
+
+  #test game_board
 
 
 
