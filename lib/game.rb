@@ -59,16 +59,13 @@ attr_reader :board, :cpu_board
     cpu_place_cruiser
     cpu_place_sub
     turn
-
   end
 
   def game_board
     p "=============COMPUTER BOARD============="
-    #@cpu_board.render(true)
-    @cpu_board.render #need to print cpu board
+    @cpu_board.render
     p "==============PLAYER BOARD=============="
     @board.render(true)
-    #@board.render
   end
 
   def turn
@@ -99,9 +96,8 @@ attr_reader :board, :cpu_board
           human_win
           cpu_win
         end
-      exit
+     exit
   end #turn method
-
 
   def cpu_place_cruiser
     coord = @cpu_board.cells[@cpu_board.cells.keys.sample]
@@ -133,18 +129,18 @@ attr_reader :board, :cpu_board
     letter = coord.coordinate[0]
     coords = [coord.coordinate]
 
-    if num == 4
-      coord2 = "#{letter+(num-1).to_s}"
-      coords << coord2
-      coords.sort!
-    elsif num == 1
-      coord2 = "#{letter+(num+1).to_s}"
-      coords << coord2
-      coords.sort!
+    until @cpu_board.valid_placement?(@cpu_sub, coords)
+      if num == 4
+        coord2 = "#{letter+(num-1).to_s}"
+        coords << coord2
+        coords.sort!
+      elsif num == 1
+        coord2 = "#{letter+(num+1).to_s}"
+        coords << coord2
+        coords.sort!
+      end
     end
-    @cpu_board.valid_placement?(@cpu_sub, coords)
     @cpu_board.place(@cpu_sub, coords)
-    #ask drew about this
   end #sub placer method
 
   def cpu_fire
@@ -174,12 +170,7 @@ attr_reader :board, :cpu_board
    def cpu_win
      if (@sub.sunk? == true) && (@cruiser.sunk? == true)
        p "Computer win!"
-     end 
-   end
-
-
-   def exit
-     #ends the game
+     end
    end
 
 end#class
