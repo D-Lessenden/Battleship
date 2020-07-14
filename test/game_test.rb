@@ -4,6 +4,7 @@ require './lib/ship'
 require './lib/cell'
 require './lib/board'
 require './lib/game'
+require 'mocha/minitest'
 require 'pry'
 
 class GameTest < Minitest::Test
@@ -11,23 +12,26 @@ class GameTest < Minitest::Test
 
   def setup
     @game = Game.new
-    @cpu_cruiser = Ship.new("Cruiser", 3)
-    @cpu_sub = Ship.new("Submarine", 2)
-    @sub = Ship.new("Submarine", 2)
-    @cruiser = Ship.new("Cruiser", 3)
   end
 
   def test_it_exists
-    assert_instance_of Game, @game
 
+    assert_instance_of Game, @game
+  end
+
+  def test_main_menu
+    @game.stubs(:get_user_input).returns("p")
+
+    assert_equal [], @game.main_menu
   end
 
   def test_cpu_place_cruiser
     refute nil, @game.cpu_place_cruiser
     refute nil, @game.cpu_place_sub
+    #@game.cpu_board.place(@cpu_cruiser, ["A1", "A2", "A3"])
+    #assert_equal "1", @game.cpu_board.render
   end
-
-
+  
   def test_cpu_fire
     skip
     @game.board.verify_and_fire("A1")
