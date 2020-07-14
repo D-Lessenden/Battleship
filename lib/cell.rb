@@ -1,10 +1,11 @@
 
 class Cell
-attr_reader :coordinate, :ship, :fired_shots_recieved
+attr_reader :coordinate, :ship, :misses, :hit
   def initialize(coordinate)
     @coordinate = coordinate
     @ship
-    @fired_shots_recieved = 0
+    @misses = 0
+    @hit = 0
   end
 
   def empty?
@@ -17,17 +18,19 @@ attr_reader :coordinate, :ship, :fired_shots_recieved
 
   def fire_upon
     if empty?
-      @fired_shots_recieved += 1
+      @misses += 1
     elsif @ship != nil
       @ship.hit
-      @fired_shots_recieved += 1
+      @hit += 1
     end
   end
 
   def fired_upon?
-    if @fired_shots_recieved == 0
+    if !empty? && (@hit > 0)
+      true
+    elsif @misses == 0
       false
-    elsif @fired_shots_recieved > 0
+    elsif @misses > 0
       true
     end
   end
