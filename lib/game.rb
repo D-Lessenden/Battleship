@@ -1,34 +1,42 @@
-require 'pry'
+require "pry"
 class Game
-  attr_reader :board
+attr_reader :board, :cpu_board
   def initialize
     @board = Board.new
     @board.generate_cells
+    @sub = Ship.new("Submarine", 2)
     @cruiser = Ship.new("Cruiser", 3)
-    @submarine = Ship.new("Submarine", 2)
-
+    @cpu_board = Board.new
+    @cpu_board.generate_cells
+    @cpu_sub = Ship.new("Submarine", 2)
+    @cpu_cruiser = Ship.new("Cruiser", 3)
   end
 
-   def main_menu
+  def game_play
     puts "Welcome to BATTLESHIP\nEnter p to play. Enter q to quit"
-    @initial_input = gets.chomp!.upcase
-      if @initial_input == "P"
-        instructions
-        # puts "Enter the squares for the Sub (2 spaces):"
-        # @user_sub_placement = gets.chomp.upcase!
-        # if true @board.valid_placement?
-        # elsif false
-        #   puts "Those are invalid coordinates. Please try again."
-        # end
-        #
-        # #ship_placements(method) should verify valid coordinate, transforms data to array, and places ship
-        # @board.render(true)
+    main_menu
+    instructions
+    turn
+  end
 
-      elsif @initial_input == "Q"
+  def get_user_input
+    gets.chomp!.upcase
+  end
+
+  def main_menu
+    @initial_input = get_user_input
+    until (@initial_input == "P") || (@initial_input == "Q")
+      puts "Invalid selection.\nEnter p to play. Enter q to quit"
+      @initial_input = get_user_input
+    end
+    if @initial_input == "Q"
           puts "Bye Felicia"
-      end
-   end
-  #
+          exit!
+    elsif @initial_input == "P"
+        puts "So it is decided, we battle the ships!"
+    end
+  end
+
 
   def instructions
     puts "I have laid out my ships on the grid.\n
@@ -37,71 +45,151 @@ class Game
     #sleep(?)
     puts "  1 2 3 4\nA . . . .\nB . . . .\nC . . . .\nD . . . ."
     puts "Enter the squares for the Sub (2 spaces):"
-    user_input = gets.chomp.upcase
+    user_input = get_user_input
     placement = []
     placement << user_input.split(" ")
     placement.flatten!
-    until @board.valid_placement?(@submarine, placement) == true
+    until @board.valid_placement?(@sub, placement) == true
       puts "Those are invalid coordinates. Please try again."
       user_input = gets.chomp.upcase
       placement = []
       placement << user_input.split(" ")
       placement.flatten!
-    end
-    @board.place(@submarine, placement)
+    end #end method
+    @board.place(@sub, placement)
 
     puts "Enter the squares for the Cruiser (3 spaces):"
-    user_input = gets.chomp.upcase
+    user_input = gets.chomp.upcase #method
     placement = []
     placement << user_input.split(" ")
-    placement.flatten!
-      until @board.valid_placement?(@cruiser, placement) == true
+    placement.flatten! #end method
+      until @board.valid_placement?(@cruiser, placement) == true #method
         puts "Those are invalid coordinates. Please try again."
         user_input = gets.chomp.upcase
         placement = []
         placement << user_input.split(" ")
         placement.flatten!
-      end
+      end #end method
     @board.place(@cruiser, placement)
-    @board.render(true)
+    cpu_place_cruiser
+    cpu_place_sub
+    turn
+
   end
 
   def game_board
     p "=============COMPUTER BOARD============="
-    @board.render
+    #@cpu_board.render(true)
+    @cpu_board.render #need to print cpu board
     p "==============PLAYER BOARD=============="
     @board.render(true)
+    #@board.render
   end
 
   def turn
-    # @board.place(@cruiser, ["A1", "A2", "A3"])
-    game_board
-    puts "Enter the coordinate for your shot:"
-    shot = gets.chomp!.upcase
-    # @board.check_user_input(shot) not working as method????
-      until @board.valid_coordinate?(shot) == true
-      puts "Those are invalid coordinates. Please try again."
+    until human_win? == true || cpu_win? == true
+      game_board
+      puts "Enter the coordinate for your shot:"
       shot = gets.chomp!.upcase
-      end
-    @board.verify_and_fire(shot)
-    # build helper method for computer fire -D
-      if @board.cells[shot].fired_shots_recieved > 1
-        "You already fired on this spot"
-      elsif @board.cells[shot].empty? == false && @board.cells[shot].fired_shots_recieved == 1
-        "Hit"
-      elsif @board.cells[shot].empty? == true
-        "Miss"
-      end
-    #If cell already fired upon, user notified
+        until @cpu_board.valid_coordinate?(shot) == true
+          p "Those are invalid coordinates. Please try again."
+          shot = gets.chomp!.upcase
+        end
+        until @cpu_board.cells[shot].fired_upon? == false
+          p "You already fired at that space. Please try again."
+          shot = gets.chomp!.upcase
+        end
+      @cpu_board.verify_and_fire(shot)
+          if @cpu_board.cells[shot].empty? == true
+            p "Your shot missed!"
+          elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == true
+             p "You sunk a ship!"
+          elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == false
+             p "You hit a ship!"
+          end
+          sleep(2)
+        cpu_fire
+      sleep(2)
+
+    end
+  end #turn method
+
+
+
+  def cpu_place_cruiser
+    coord = @cpu_board.cells[@cpu_board.cells.keys.sample]
+
+    num = coord.coordinate[1].to_i
+    letter = coord.coordinate[0]
+    coords = [coord.coordinate]
+
+    if num <= 2
+      coord2 = "#{letter+(num+1).to_s}"
+      coord3 = "#{letter+(num+2).to_s}"
+      coords << coord2
+      coords << coord3
+      coords.sort!
+    elsif num >= 3
+      coord2 = "#{letter+(num-1).to_s}"
+      coord3 = "#{letter+(num-2).to_s}"
+      coords << coord2
+      coords << coord3
+      coords.sort!
+    end
+    @cpu_board.place(@cpu_cruiser, coords)
+  end #cpu cruiser placement
+
+  def cpu_place_sub
+    coord = @cpu_board.cells[@cpu_board.cells.keys.sample]
+
+    num = coord.coordinate[1].to_i
+    letter = coord.coordinate[0]
+    coords = [coord.coordinate]
+
+    if num == 4
+      coord2 = "#{letter+(num-1).to_s}"
+      coords << coord2
+      coords.sort!
+    elsif num == 1
+      coord2 = "#{letter+(num+1).to_s}"
+      coords << coord2
+      coords.sort!
+    end
+    @cpu_board.valid_placement?(@cpu_sub, coords)
+    @cpu_board.place(@cpu_sub, coords)
+    #ask drew about this
+  end #sub placer method
+
+  def cpu_fire
+    valid_cells = @board.cells.select do |k, v|
+      @board.valid_and_no_shot(k)
+    end
+
+    cpu_fire = valid_cells[valid_cells.keys.sample]
+    cpu = cpu_fire.coordinate
+    @board.verify_and_fire(cpu)
+
+    if @board.cells[cpu].empty? == true
+      p "I missed!? Are you moving your ships?"
+    elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == true
+      p "Ha! I got you! One down. One to go."
+    elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == false
+      p "Ha! I got you!"
+    end
   end
 
+   def human_win?
+     if (@cpu_sub.sunk? == true) && (@cpu_cruiser.sunk? == true)
+       puts "You WINJKSDHF:SKDJFHSD:FJKHSDF:OSFH"
+       exit!
+     end
+   end
 
+   def cpu_win?
+     if (@sub.sunk? == true) && (@cruiser.sunk? == true)
+       puts "I WIN:KHDF:SDIUHFS DOFHSDF"
+       exit!
+    end
+   end
 
-
-  # def game_over
-  #   if user ships sunk
-  #     puts "I won!"
-  #   elsif cpu ships sunk
-  #     puts "You won!"
-  # end
-end
+end#class
