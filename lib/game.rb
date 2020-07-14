@@ -1,6 +1,7 @@
 require "pry"
 class Game
 attr_reader :board, :cpu_board
+
   def initialize
     @board = Board.new
     @board.generate_cells
