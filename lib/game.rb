@@ -13,91 +13,119 @@ attr_reader :board, :cpu_board
   end
 
 
-  def main_menu
+  def game_play
     puts "Welcome to BATTLESHIP\nEnter p to play. Enter q to quit"
-    @initial_input = gets.chomp!.upcase
-      if @initial_input == "P"
-        instructions
-      elsif @initial_input == "Q"
-          puts "Bye Felicia"
-      end
-   end
-
-  def instructions
-    puts "I have laid out my ships on the grid.\n
-    You now need to lay out your two ships.\n
-    The Cruiser is three units long and the Submarine is two units long."
-    #sleep(?)
-    puts "  1 2 3 4\nA . . . .\nB . . . .\nC . . . .\nD . . . ."
-    puts "Enter the squares for the Sub (2 spaces):"
-    user_input = gets.chomp.upcase
-    placement = []
-    placement << user_input.split(" ")
-    placement.flatten!
-    until @board.valid_placement?(@sub, placement) == true
-      puts "Those are invalid coordinates. Please try again."
-      user_input = gets.chomp.upcase
-      placement = []
-      placement << user_input.split(" ")
-      placement.flatten!
-    end
-    @board.place(@sub, placement)
-
-    puts "Enter the squares for the Cruiser (3 spaces):"
-    user_input = gets.chomp.upcase
-    placement = []
-    placement << user_input.split(" ")
-    placement.flatten!
-      until @board.valid_placement?(@cruiser, placement) == true
-        puts "Those are invalid coordinates. Please try again."
-        user_input = gets.chomp.upcase
-        placement = []
-        placement << user_input.split(" ")
-        placement.flatten!
-      end
-    @board.place(@cruiser, placement)
-    cpu_place_cruiser
-    cpu_place_sub
+    main_menu
+    instructions
     turn
   end
 
+  def get_user_input
+    gets.chomp!.upcase
+  end
+
+  def main_menu
+    @initial_input = get_user_input
+    until (@initial_input == "P") || (@initial_input == "Q")
+      puts "Invalid selection.\nEnter p to play. Enter q to quit"
+      @initial_input = get_user_input
+    end
+    if @initial_input == "Q"
+          puts "Bye Felicia"
+          exit!
+    elsif @initial_input == "P"
+        puts "So it is decided, we battle the ships!"
+    end
+  end
+
+   def instructions
+     puts "I have laid out my ships on the grid.\n
+     You now need to lay out your two ships.\n
+     The Cruiser is three units long and the Submarine is two units long."
+     #sleep(?)
+     puts "  1 2 3 4\nA . . . .\nB . . . .\nC . . . .\nD . . . ."
+     puts "Enter the squares for the Sub (2 spaces):"
+     user_input = get_user_input
+     placement = []
+     placement << user_input.split(" ")
+     placement.flatten!
+     until @board.valid_placement?(@sub, placement) == true
+       puts "Those are invalid coordinates. Please try again."
+       user_input = gets.chomp.upcase
+       placement = []
+       placement << user_input.split(" ")
+       placement.flatten!
+     end #end method
+     @board.place(@sub, placement)
+
+     puts "Enter the squares for the Cruiser (3 spaces):"
+     user_input = gets.chomp.upcase #method
+     placement = []
+     placement << user_input.split(" ")
+     placement.flatten! #end method
+       until @board.valid_placement?(@cruiser, placement) == true #method
+         puts "Those are invalid coordinates. Please try again."
+         user_input = gets.chomp.upcase
+         placement = []
+         placement << user_input.split(" ")
+         placement.flatten!
+       end #end method
+     @board.place(@cruiser, placement)
+     cpu_place_cruiser
+     cpu_place_sub
+     turn
+
+   end
+
   def game_board
-    p "=============COMPUTER BOARD============="
+    p "=============COMPUTER BOARD=============" #change to enemy board
     @cpu_board.render
     p "==============PLAYER BOARD=============="
     @board.render(true)
   end
 
   def turn
-    until human_win == true || cpu_win == true
+    until human_win? == true || cpu_win? == true
       game_board
-      puts "Enter the coordinate for your shot:"
-      shot = gets.chomp!.upcase
-        until @cpu_board.valid_coordinate?(shot) == true
-          p "Those are invalid coordinates. Please try again."
-          shot = gets.chomp!.upcase
-        end
-        until @cpu_board.cells[shot].fired_upon? == false
-          p "You already fired at that space."
-          shot = gets.chomp!.upcase
-        end
+      input_for_human_fire
+      # puts "Enter the coordinate for your shot:"
+      # shot = gets.chomp!.upcase
+      #   until @cpu_board.valid_coordinate?(shot) == true
+      #     p "Those are invalid coordinates. Please try again."
+      #     shot = gets.chomp!.upcase
+      #   end
+      #   until @cpu_board.cells[shot].fired_upon? == false
+      #     p "You already fired at that space. Please try again."
+      #     shot = gets.chomp!.upcase
+      #   end
       @cpu_board.verify_and_fire(shot)
           if @cpu_board.cells[shot].empty? == true
-            p "Your shot missed"
+            p "Your shot missed!"
           elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == true
-             p "Sunk"
+             p "You sunk a ship!"
           elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == false
-             p "Hit"
+             p "You hit a ship!"
           end
           sleep(2)
         cpu_fire
       sleep(2)
 
-          human_win
-          cpu_win
-        end
-     exit
+    end
   end #turn method
+
+  def input_for_human_fire
+    puts "Enter the coordinate for your shot:"
+    shot = gets.chomp!.upcase
+    until (@cpu_board.valid_coordinate?(shot) == true) && (@cpu_board.cells[shot].fired_upon? == false)
+      if @cpu_board.valid_coordinate?(shot) == false
+        puts "Those are invalid coordinates. Please try again."
+        shot = gets.chomp!.upcase
+      elsif @cpu_board.cells[shot].fired_upon? == true
+        puts "You already fired at that space. Please try again."
+        shot = gets.chomp!.upcase
+      end
+    end
+  end
 
   def cpu_place_cruiser
     coord = @cpu_board.cells[@cpu_board.cells.keys.sample]
@@ -163,14 +191,17 @@ attr_reader :board, :cpu_board
 
    def human_win
     if (@cpu_sub.sunk? == true) && (@cpu_cruiser.sunk? == true)
-       p "You won!"
+       puts "You won! You scallywag! You've ended meeeeeee!!!"
+       exit! #go back to main menu instead (start_game)
      end
    end
 
    def cpu_win
      if (@sub.sunk? == true) && (@cruiser.sunk? == true)
-       p "Computer win!"
+       puts "Computer win!"
+       exit! #go back to main menus instead
      end
    end
+
 
 end#class
