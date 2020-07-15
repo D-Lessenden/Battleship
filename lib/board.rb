@@ -31,7 +31,7 @@ def valid_coordinate?(cord)
     if valid_and_no_shot(cord) #&& @cells[cord].misses == 0 && @cells[cord].hit == 0
       @cells[cord].fire_upon
     else
-      false
+      (@cells[cord].misses += 1)
     end
   end
 
