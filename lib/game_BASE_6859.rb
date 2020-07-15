@@ -1,6 +1,5 @@
 class Game
 attr_reader :board, :cpu_board
-
   def initialize
     @board = Board.new
     @board.generate_cells
@@ -17,9 +16,7 @@ attr_reader :board, :cpu_board
     main_menu
     instructions
     turn
-
     return_to_main_menu
-
   end
 
   def get_user_input
@@ -39,18 +36,16 @@ attr_reader :board, :cpu_board
         puts "So it is decided, we battle the ships!"
         cpu_place_cruiser
         cpu_place_sub
-        sleep(2)
     end
   end
 
 
   def instructions
     puts "I have laid out my ships on the grid.\n
-    You now need to lay out your two ships.\
+    You now need to lay out your two ships.\n
     The Submarine is two units long and the Cruiser is three units long."
     puts "  1 2 3 4\nA . . . .\nB . . . .\nC . . . .\nD . . . ."
     puts "Enter the squares for the Submarine (2 spaces):"
-
     user_input = get_user_input
     placement = []
     placement << user_input.split(" ")
@@ -77,47 +72,51 @@ attr_reader :board, :cpu_board
         placement.flatten!
       end #end method
     @board.place(@cruiser, placement)
-    legend
     turn
 
   end
 
   def game_board
-    p "=============ENEMY BOARD============="
+    p "=============COMPUTER BOARD============="
     @cpu_board.render
     p "==============PLAYER BOARD=============="
     @board.render(true)
-    #@board.render
   end
 
 
   def turn
-   until human_win? == true || cpu_win? == true
-     game_board
-     puts "Enter the coordinate for your shot:"
-     shot = gets.chomp!.upcase
-       until (@cpu_board.valid_coordinate?(shot) == true)
-           p "Please enter a valid coordinate."
-           shot = gets.chomp!.upcase
-       end
-       unless @cpu_board.cells[shot].fired_upon? == false
-         puts "You already fired on this spot, check your board :)"
-       else
-         @cpu_board.verify_and_fire(shot)
-         if @cpu_board.cells[shot].empty? == true
-           p "Your shot on #{shot} missed! Told you that you would be seeing that 'M' a lot."
-         elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == true
-            p "Your shot on #{shot} sunk a ship! This is malarkey!"
-         elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == false
-            p "You hit a ship on #{shot}! You scoundrel!"
-         end
-       end
-         sleep(2)
-       cpu_fire
-     sleep(2)
-   end
-     return_to_main_menu
- end #turn method
+    until human_win? == true || cpu_win? == true
+      game_board
+      puts "Enter the coordinate for your shot:"
+      shot = gets.chomp!.upcase
+      # until @cpu_board.valid_coordinate?(shot) == true && @cpu_board.cells[shot].fired_upon? == false
+      #     p "Those are invalid coordinates or you have already fired on that spot. Please try again."
+      #     shot = gets.chomp!.upcase
+      # end
+      until @cpu_board.valid_coordinate?(shot) == true
+          p "That is an invalid coordinate! Can't you see the map!?"
+          shot = gets.chomp!.upcase
+      end
+      unless @cpu_board.cells[shot].fired_upon? == false
+         "You already fired at that spot. You're not trying to let me win, are you?"
+      else
+        @cpu_board.verify_and_fire(shot)
+            if @cpu_board.cells[shot].empty? == true
+              p "Your shot at #{shot} missed!"
+            elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == true
+               p "Your shot at #{shot} sunk a ship!"
+            elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == false
+               p "You hit a ship at #{shot}!"
+            end
+      end#unless
+          sleep(2)
+        if (@cpu_sub.sunk? == false) || (@cpu_cruiser.sunk? == false)
+          cpu_fire
+        end
+      sleep(2)
+
+    end
+  end #turn method
 
   def cpu_place_cruiser
     coord = @cpu_board.cells[@cpu_board.cells.keys.sample]
@@ -143,17 +142,14 @@ attr_reader :board, :cpu_board
   end #cpu cruiser placement
 
   def cpu_place_sub
-
     valid_sub_cells = @board.cells.select do |k, v|
       !k.include?(@cruiser_letter)
     end
-
 
     coord = valid_sub_cells[valid_sub_cells.keys.sample]
     num = coord.coordinate[1].to_i
     letter = coord.coordinate[0]
     coords = [coord.coordinate]
-
 
       if num == 4
         coord2 = "#{letter+(num-1).to_s}"
@@ -169,7 +165,6 @@ attr_reader :board, :cpu_board
         coords.sort!
       end
     @cpu_board.place(@cpu_sub, coords)
-
   end #sub placer method
 
   def cpu_fire
@@ -186,21 +181,20 @@ attr_reader :board, :cpu_board
     elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == true
       p "Ha! I got you! My shot at #{cpu} sunk a ship!"
     elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == false
-      p "Ha! I got you at #{cpu}! You ain't slick, you can't hide from me."
+      p "Ha! I got you at #{cpu}!"
     end
   end
 
    def human_win?
      if (@cpu_sub.sunk? == true) && (@cpu_cruiser.sunk? == true)
-      puts "You won? You!? How could I let this happen. Let's play again. Best 5 out of 7."
+      puts "You WINJKSDHF:SKDJFHSD:FJKHSDF:OSFH"
       return_to_main_menu
-
      end
    end
 
    def cpu_win?
      if (@sub.sunk? == true) && (@cruiser.sunk? == true)
-       puts "I WIN!! I AM A GOLDEN GOD!!"
+       puts "I WIN:KHDF:SDIUHFS DOFHSDF"
       return_to_main_menu
       end
     end
@@ -208,21 +202,4 @@ attr_reader :board, :cpu_board
    def return_to_main_menu
      game_play
    end
-
-   def legend
-     puts "Let's commence on this gentlemanly contest."
-     sleep(1)
-     puts "Remember, 'H' means stands for Hit."
-     sleep(2)
-     puts "'X' means that the entire ship has sunk and is underwater."
-     sleep(2)
-     puts "'S' stands for where your ship is located."
-     sleep(2)
-     puts "'.' is an unexplored space."
-     sleep(2)
-     puts "And remember this one, 'M' stands for a Miss... I have a feeling you'll be seeing that one a lot."
-     sleep(3)
-   end
-
-
 end#class

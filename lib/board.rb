@@ -1,4 +1,3 @@
-
 class Board
   attr_reader :cells #added attr_reader w/ :cells so that @board.cells responds as indicated in specs
 
@@ -25,9 +24,8 @@ def valid_coordinate?(cord)
 
   def valid_and_no_shot(cord)
     @cells.has_key?(cord) && @cells[cord].misses == 0 && @cells[cord].hit == 0
-
   end
-
+  
   def verify_and_fire(cord)
     if valid_and_no_shot(cord) #&& @cells[cord].misses == 0 && @cells[cord].hit == 0
       @cells[cord].fire_upon
@@ -79,4 +77,4 @@ def valid_coordinate?(cord)
      puts "              D| #{d_row.map { |key| @cells[key].render(true)}.join(" ")} |"
     end
   end
-end #class
+end
