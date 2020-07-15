@@ -2,19 +2,11 @@ require './lib/ship'
 require './lib/cell'
 require './lib/board'
 require './lib/game'
+require 'pry'
+
+class Runner
 @game = Game.new
-@game.game_play
+@game.main_menu
+end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+@game 

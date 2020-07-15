@@ -28,12 +28,19 @@ class GameTest < Minitest::Test
   def test_cpu_place_cruiser
     refute nil, @game.cpu_place_cruiser
     refute nil, @game.cpu_place_sub
-    #@game.cpu_board.place(@cpu_cruiser, ["A1", "A2", "A3"])
-    #assert_equal "1", @game.cpu_board.render
+    binding.pry
+    p @game.cpu_board.render
   end
-  
+
+  # def test_cpu_place_cruiser
+  #   @game.board.place(@cpu_cruiser, ["A1", "A2", "A3"])
+  #   @game.cpu_place_sub
+  # end
+
+
+
   def test_cpu_fire
-    skip
+    #skip
     @game.board.verify_and_fire("A1")
     @game.board.verify_and_fire("A2")
     @game.board.verify_and_fire("A3")
@@ -49,15 +56,19 @@ class GameTest < Minitest::Test
     @game.board.verify_and_fire("D1")
     @game.board.verify_and_fire("D2")
     @game.board.verify_and_fire("D3")
-    assert_equal "D4", @game.cpu_fire
+    #assert_equal "D4", @game.cpu_fire
+    assert_equal "I missed!? Are you moving your ships?", @game.cpu_fire
   end
 
   def test_cpu_miss
-    @game.board.place(@cpu_sub, ["D3", "D4"])
-    assert_equal "Miss!? Are you moving your ships?", @game.cpu_fire
+    #skip
+    #@game.board.place(@cpu_sub, ["D3", "D4"])
+    assert_equal "I missed!? Are you moving your ships?", @game.cpu_fire
   end
 
   def test_cpu_hit
+    #skip
+    @game.board.place(@cpu_sub, ["D3", "D4"])
     @game.board.verify_and_fire("A1")
     @game.board.verify_and_fire("A2")
     @game.board.verify_and_fire("A3")
@@ -72,11 +83,11 @@ class GameTest < Minitest::Test
     @game.board.verify_and_fire("C4")
     @game.board.verify_and_fire("D1")
     @game.board.verify_and_fire("D2")
-    @game.board.place(@cpu_sub, ["D3", "D4"])
     assert_equal "Ha! I got you!", @game.cpu_fire
   end
 
   def test_cpu_sink
+  #  skip
     @game.board.place(@cpu_sub, ["D3", "D4"])
     @game.board.verify_and_fire("A1")
     @game.board.verify_and_fire("A2")
@@ -93,11 +104,12 @@ class GameTest < Minitest::Test
     @game.board.verify_and_fire("D1")
     @game.board.verify_and_fire("D2")
     @game.board.verify_and_fire("D3")
-    assert_equal "One down. One to go.", @game.cpu_fire
+    assert_equal "Ha! I got you! One down. One to go.", @game.cpu_fire
   end
 
 
   def test_game_over_p1_win
+    skip
     @game.board.place(@cpu_sub, ["B1", "B2"])
     @game.board.place(@cpu_cruiser, ["A1", "A2", "A3"])
     @game.board.verify_and_fire("A1")
@@ -107,10 +119,11 @@ class GameTest < Minitest::Test
     @game.board.verify_and_fire("B2")
     assert_equal true, @cpu_sub.sunk?
     assert_equal true, @cpu_cruiser.sunk?
-    assert_equal "You won!", @game.human_win
+    assert_equal "You won!", @game.human_win?
   end
 
   def test_game_over_cpu_win
+    skip
     @game.board.place(@sub, ["B1", "B2"])
     @game.board.place(@cruiser, ["A1", "A2", "A3"])
     @game.board.verify_and_fire("A1")
@@ -120,7 +133,7 @@ class GameTest < Minitest::Test
     @game.board.verify_and_fire("B2")
     assert_equal true, @sub.sunk?
     assert_equal true, @cruiser.sunk?
-    assert_equal "Computer win!", @game.cpu_win
+    assert_equal "Computer win!", @game.cpu_win?
   end
 
 
@@ -133,33 +146,35 @@ class GameTest < Minitest::Test
 
   def test_turn_human_fire_sink
     skip
-    @game.board.place(@sub, ["A1", "A2"])
-    @game.board.render
-    @game.board.verify_and_fire("A1")
+    @game.cpu_board.place(@cpu_sub, ["A1", "A2"])
+    @game.cpu_board.render(true)
+    @game.cpu_board.verify_and_fire("A1")
     assert_equal "Sunk", @game.turn
   end
 
   def test_turn_human_fire_hit
     skip
-    @game.board.place(@sub, ["A1", "A2"])
-    @game.board.render
+    @game.cpu_board.place(@cpu_sub, ["A1", "A2"])
+    @game.cpu_board.render
     assert_equal "Hit", @game.turn
   end
 
 
 
   def test_turn
-    #skip
+    skip
     # game = Game.new
     # # @board = Board.new
     # # @board.generate_cells
     # cruiser = Ship.new("Cruiser", 3)
     # submarine = Ship.new("Submarine", 2)
-    @game.board.place(@cruiser, ["A1", "A2", "A3"])
-    binding.pry
+    @game.board.place(@cruiser, ["A1", "B1", "C1"])
+    #binding.pry
     @game.turn
   end
 
-
+  #test game_board
+  #108 -- test_game_over_p1
+  #121 est_game_over_cpu_win
 
 end
