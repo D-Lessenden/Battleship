@@ -11,6 +11,9 @@ class GameTest < Minitest::Test
 
   def setup
     @game = Game.new
+    
+    @game.cpu_place_cruiser
+      @game.cpu_place_sub
   end
 
   def test_it_exists
