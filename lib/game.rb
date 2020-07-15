@@ -26,6 +26,7 @@ attr_reader :board, :cpu_board
 
   def main_menu
     @initial_input = get_user_input
+
     until (@initial_input == "P") || (@initial_input == "Q")
       puts "Invalid selection.\nEnter p to play. Enter q to quit"
       @initial_input = get_user_input
@@ -35,6 +36,7 @@ attr_reader :board, :cpu_board
           exit!
     elsif @initial_input == "P"
         puts "So it is decided, we battle the ships!"
+        true
     end
   end
 
@@ -75,7 +77,6 @@ attr_reader :board, :cpu_board
     cpu_place_cruiser
     cpu_place_sub
     turn
-    binding.pry
 
   end
 
@@ -94,34 +95,13 @@ attr_reader :board, :cpu_board
       game_board
       puts "Enter the coordinate for your shot:"
       shot = gets.chomp!.upcase
-      until (@cpu_board.valid_coordinate?(shot) == true) && (@cpu_board.cells[shot].fired_upon? == false)
-          p "Those are invalid coordinates or you have already fired on that spot. Please try again."
-          shot = gets.chomp!.upcase
-      end
-
-      @cpu_board.verify_and_fire(shot)
-          if @cpu_board.cells[shot].empty? == true
-            p "Your shot missed!"
-          elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == true
-             p "You sunk a ship!"
-          elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == false
-             p "You hit a ship!"
-          end
-          sleep(2)
-        cpu_fire
-      sleep(2)
-
-    end
-  end #turn method
-  def turn
-    until human_win? == true || cpu_win? == true
-      game_board
-      puts "Enter the coordinate for your shot:"
-      shot = gets.chomp!.upcase
-        until (@cpu_board.valid_coordinate?(shot) == true) && (@cpu_board.cells[shot].fired_upon? == false)
-            p "Those are invalid coordinates or you have already fired on that spot. Please try again."
+        until (@cpu_board.valid_coordinate?(shot) == true)
+            p "Please enter a valid coordinate."
             shot = gets.chomp!.upcase
         end
+        unless @cpu_board.cells[shot].fired_upon? == false
+          puts "You already fired on this spot, check your board :)"
+        else
           @cpu_board.verify_and_fire(shot)
            #if fired_upon? == true inform that they already shot there
           if @cpu_board.cells[shot].empty? == true
@@ -131,6 +111,7 @@ attr_reader :board, :cpu_board
           elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == false
              p "You hit a ship on #{shot}!"
           end
+        end
           #in our fire_upon loop in cell, if its already
 
           sleep(2)
@@ -139,22 +120,6 @@ attr_reader :board, :cpu_board
     end
       return_to_main_menu
   end #turn method
-
-#   def input_for_human_fire
-#   puts "Enter the coordinate for your shot:"
-#   shot = gets.chomp!.upcase
-#   until (@cpu_board.valid_coordinate?(shot) == true) && (@cpu_board.cells[shot].fired_upon? == false)
-#     shot = gets.chomp!.upcase
-#     if @cpu_board.valid_coordinate?(shot) == false
-#       puts "Those are invalid coordinates. Please try again."
-#       shot = gets.chomp!.upcase
-#     elsif @cpu_board.cells[shot].fired_upon? == true
-#       puts "You already fired at that space. Please try again."
-#       shot = gets.chomp!.upcase
-#     end
-#   end
-# end
-
 
   def cpu_place_cruiser
     coord = @cpu_board.cells[@cpu_board.cells.keys.sample]
@@ -224,14 +189,14 @@ attr_reader :board, :cpu_board
 
    def human_win?
      if (@cpu_sub.sunk? == true) && (@cpu_cruiser.sunk? == true)
-      puts "You WINJKSDHF:SKDJFHSD:FJKHSDF:OSFH"
+      puts "You WIN AAAARRGRGRGHRGRHRGH"
       return_to_main_menu
      end
    end
 
    def cpu_win?
      if (@sub.sunk? == true) && (@cruiser.sunk? == true)
-       puts "I WIN:KHDF:SDIUHFS DOFHSDF"
+       puts "I WIN!!! AARRRRARRRHRARHRARHGRAHRG!!!!!"
       return_to_main_menu
       end
     end
