@@ -124,7 +124,7 @@ class BoardTest < Minitest::Test
      submarine = Ship.new("Submarine", 2)
      @board.place(cruiser, ["A1", "A2", "A3"])
      @board.place(submarine, ["D3", "D4"])
-     binding.pry
+
      @board.render(true)
      #@board.render
 
