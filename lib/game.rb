@@ -1,5 +1,6 @@
 class Game
 attr_reader :board, :cpu_board
+
   def initialize
     @board = Board.new
     @board.generate_cells
@@ -16,7 +17,9 @@ attr_reader :board, :cpu_board
     main_menu
     instructions
     turn
+
     return_to_main_menu
+
   end
 
   def get_user_input
@@ -36,16 +39,18 @@ attr_reader :board, :cpu_board
         puts "So it is decided, we battle the ships!"
         cpu_place_cruiser
         cpu_place_sub
+
     end
   end
 
 
   def instructions
     puts "I have laid out my ships on the grid.\n
-    You now need to lay out your two ships.\n
+    You now need to lay out your two ships.\
     The Submarine is two units long and the Cruiser is three units long."
     puts "  1 2 3 4\nA . . . .\nB . . . .\nC . . . .\nD . . . ."
     puts "Enter the squares for the Submarine (2 spaces):"
+
     user_input = get_user_input
     placement = []
     placement << user_input.split(" ")
@@ -72,6 +77,7 @@ attr_reader :board, :cpu_board
         placement.flatten!
       end #end method
     @board.place(@cruiser, placement)
+
     turn
 
   end
@@ -81,6 +87,7 @@ attr_reader :board, :cpu_board
     @cpu_board.render
     p "==============PLAYER BOARD=============="
     @board.render(true)
+    #@board.render
   end
 
 
@@ -89,6 +96,7 @@ attr_reader :board, :cpu_board
       game_board
       puts "Enter the coordinate for your shot:"
       shot = gets.chomp!.upcase
+
       # until @cpu_board.valid_coordinate?(shot) == true && @cpu_board.cells[shot].fired_upon? == false
       #     p "Those are invalid coordinates or you have already fired on that spot. Please try again."
       #     shot = gets.chomp!.upcase
@@ -142,14 +150,17 @@ attr_reader :board, :cpu_board
   end #cpu cruiser placement
 
   def cpu_place_sub
+
     valid_sub_cells = @board.cells.select do |k, v|
       !k.include?(@cruiser_letter)
     end
+
 
     coord = valid_sub_cells[valid_sub_cells.keys.sample]
     num = coord.coordinate[1].to_i
     letter = coord.coordinate[0]
     coords = [coord.coordinate]
+
 
       if num == 4
         coord2 = "#{letter+(num-1).to_s}"
@@ -165,6 +176,7 @@ attr_reader :board, :cpu_board
         coords.sort!
       end
     @cpu_board.place(@cpu_sub, coords)
+
   end #sub placer method
 
   def cpu_fire
@@ -182,13 +194,16 @@ attr_reader :board, :cpu_board
       p "Ha! I got you! My shot at #{cpu} sunk a ship!"
     elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == false
       p "Ha! I got you at #{cpu}!"
+
     end
   end
 
    def human_win?
      if (@cpu_sub.sunk? == true) && (@cpu_cruiser.sunk? == true)
+
       puts "You WINJKSDHF:SKDJFHSD:FJKHSDF:OSFH"
       return_to_main_menu
+
      end
    end
 
@@ -202,4 +217,5 @@ attr_reader :board, :cpu_board
    def return_to_main_menu
      game_play
    end
+
 end#class
