@@ -36,7 +36,6 @@ attr_reader :board, :cpu_board
         puts "So it is decided, we battle the ships!"
         cpu_place_cruiser
         cpu_place_sub
-      #  binding.pry
     end
   end
 
@@ -44,10 +43,9 @@ attr_reader :board, :cpu_board
   def instructions
     puts "I have laid out my ships on the grid.\n
     You now need to lay out your two ships.\n
-    The Cruiser is three units long and the Submarine is two units long."
-    #sleep(?)
+    The Submarine is two units long and the Cruiser is three units long."
     puts "  1 2 3 4\nA . . . .\nB . . . .\nC . . . .\nD . . . ."
-    puts "Enter the squares for the Sub (2 spaces):"
+    puts "Enter the squares for the Submarine (2 spaces):"
     user_input = get_user_input
     placement = []
     placement << user_input.split(" ")
@@ -91,19 +89,26 @@ attr_reader :board, :cpu_board
       game_board
       puts "Enter the coordinate for your shot:"
       shot = gets.chomp!.upcase
-      until (@cpu_board.valid_coordinate?(shot) == true) && (@cpu_board.cells[shot].fired_upon? == false)
-          p "Those are invalid coordinates or you have already fired on that spot. Please try again."
+      # until @cpu_board.valid_coordinate?(shot) == true && @cpu_board.cells[shot].fired_upon? == false
+      #     p "Those are invalid coordinates or you have already fired on that spot. Please try again."
+      #     shot = gets.chomp!.upcase
+      # end
+      until @cpu_board.valid_coordinate?(shot) == true
+          p "That is an invalid coordinate! Can't you see the map!?"
           shot = gets.chomp!.upcase
       end
-
-      @cpu_board.verify_and_fire(shot)
-          if @cpu_board.cells[shot].empty? == true
-            p "Your shot missed!"
-          elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == true
-             p "You sunk a ship!"
-          elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == false
-             p "You hit a ship!"
-          end
+      unless @cpu_board.cells[shot].fired_upon? == false
+         "You already fired at that spot. You're not trying to let me win, are you?"
+      else
+        @cpu_board.verify_and_fire(shot)
+            if @cpu_board.cells[shot].empty? == true
+              p "Your shot at #{shot} missed!"
+            elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == true
+               p "Your shot at #{shot} sunk a ship!"
+            elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == false
+               p "You hit a ship at #{shot}!"
+            end
+      end#unless
           sleep(2)
         if (@cpu_sub.sunk? == false) || (@cpu_cruiser.sunk? == false)
           cpu_fire
@@ -172,11 +177,11 @@ attr_reader :board, :cpu_board
     @board.verify_and_fire(cpu)
 
     if @board.cells[cpu].empty? == true
-      p "I missed!? Are you moving your ships?"
+      p "I missed at #{cpu}!? Are you moving your ships?"
     elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == true
-      p "Ha! I got you! One down. One to go."
+      p "Ha! I got you! My shot at #{cpu} sunk a ship!"
     elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == false
-      p "Ha! I got you!"
+      p "Ha! I got you at #{cpu}!"
     end
   end
 
@@ -197,5 +202,4 @@ attr_reader :board, :cpu_board
    def return_to_main_menu
      game_play
    end
-
 end#class
