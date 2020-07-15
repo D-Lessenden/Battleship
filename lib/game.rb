@@ -17,6 +17,7 @@ attr_reader :board, :cpu_board
     main_menu
     instructions
     turn
+    return_to_main_menu
   end
 
   def get_user_input
@@ -74,6 +75,7 @@ attr_reader :board, :cpu_board
     cpu_place_cruiser
     cpu_place_sub
     turn
+    binding.pry
 
   end
 
@@ -86,19 +88,17 @@ attr_reader :board, :cpu_board
     #@board.render
   end
 
+
   def turn
     until human_win? == true || cpu_win? == true
       game_board
       puts "Enter the coordinate for your shot:"
       shot = gets.chomp!.upcase
-        until @cpu_board.valid_coordinate?(shot) == true
-          p "Those are invalid coordinates. Please try again."
+      until (@cpu_board.valid_coordinate?(shot) == true) && (@cpu_board.cells[shot].fired_upon? == false)
+          p "Those are invalid coordinates or you have already fired on that spot. Please try again."
           shot = gets.chomp!.upcase
-        end
-        until @cpu_board.cells[shot].fired_upon? == false
-          p "You already fired at that space. Please try again."
-          shot = gets.chomp!.upcase
-        end
+      end
+
       @cpu_board.verify_and_fire(shot)
           if @cpu_board.cells[shot].empty? == true
             p "Your shot missed!"
@@ -113,25 +113,65 @@ attr_reader :board, :cpu_board
 
     end
   end #turn method
+  def turn
+    until human_win? == true || cpu_win? == true
+      game_board
+      puts "Enter the coordinate for your shot:"
+      shot = gets.chomp!.upcase
+        until (@cpu_board.valid_coordinate?(shot) == true) && (@cpu_board.cells[shot].fired_upon? == false)
+            p "Those are invalid coordinates or you have already fired on that spot. Please try again."
+            shot = gets.chomp!.upcase
+        end
+          @cpu_board.verify_and_fire(shot)
+           #if fired_upon? == true inform that they already shot there
+          if @cpu_board.cells[shot].empty? == true
+            p "Your shot missed!"
+          elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == true
+             p "You sunk a ship!"
+          elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == false
+             p "You hit a ship!"
+          end
+          #in our fire_upon loop in cell, if its already
 
+          sleep(2)
+        cpu_fire
+      sleep(2)
+    end
+      return_to_main_menu
+  end #turn method
+
+#   def input_for_human_fire
+#   puts "Enter the coordinate for your shot:"
+#   shot = gets.chomp!.upcase
+#   until (@cpu_board.valid_coordinate?(shot) == true) && (@cpu_board.cells[shot].fired_upon? == false)
+#     shot = gets.chomp!.upcase
+#     if @cpu_board.valid_coordinate?(shot) == false
+#       puts "Those are invalid coordinates. Please try again."
+#       shot = gets.chomp!.upcase
+#     elsif @cpu_board.cells[shot].fired_upon? == true
+#       puts "You already fired at that space. Please try again."
+#       shot = gets.chomp!.upcase
+#     end
+#   end
+# end
 
 
   def cpu_place_cruiser
     coord = @cpu_board.cells[@cpu_board.cells.keys.sample]
 
     num = coord.coordinate[1].to_i
-    letter = coord.coordinate[0]
+    @cruiser_letter = coord.coordinate[0]
     coords = [coord.coordinate]
 
     if num <= 2
-      coord2 = "#{letter+(num+1).to_s}"
-      coord3 = "#{letter+(num+2).to_s}"
+      coord2 = "#{@cruiser_letter+(num+1).to_s}"
+      coord3 = "#{@cruiser_letter+(num+2).to_s}"
       coords << coord2
       coords << coord3
       coords.sort!
     elsif num >= 3
-      coord2 = "#{letter+(num-1).to_s}"
-      coord3 = "#{letter+(num-2).to_s}"
+      coord2 = "#{@cruiser_letter+(num-1).to_s}"
+      coord3 = "#{@cruiser_letter+(num-2).to_s}"
       coords << coord2
       coords << coord3
       coords.sort!
@@ -140,24 +180,28 @@ attr_reader :board, :cpu_board
   end #cpu cruiser placement
 
   def cpu_place_sub
-    coord = @cpu_board.cells[@cpu_board.cells.keys.sample]
+      valid_cells = @board.cells.select do |k, v|
+        !k.include?(@cruiser_letter)
 
-    num = coord.coordinate[1].to_i
-    letter = coord.coordinate[0]
-    coords = [coord.coordinate]
+      end
+      coord = valid_cells[valid_cells.keys.sample]
 
-    if num == 4
-      coord2 = "#{letter+(num-1).to_s}"
-      coords << coord2
-      coords.sort!
-    elsif num == 1
-      coord2 = "#{letter+(num+1).to_s}"
-      coords << coord2
-      coords.sort!
-    end
-    @cpu_board.valid_placement?(@cpu_sub, coords)
-    @cpu_board.place(@cpu_sub, coords)
-    #ask drew about this
+      num = coord.coordinate[1].to_i
+      letter = coord.coordinate[0]
+      coords = [coord.coordinate]
+
+    # until @cpu_board.valid_placement?(@cpu_sub, coords)
+        if num == 4
+          coord2 = "#{letter+(num-1).to_s}"
+          coords << coord2
+          coords.sort!
+        elsif num == 1
+          coord2 = "#{letter+(num+1).to_s}"
+          coords << coord2
+          coords.sort!
+        end
+      @cpu_board.place(@cpu_sub, coords)
+      #ask drew about this
   end #sub placer method
 
   def cpu_fire
@@ -180,16 +224,20 @@ attr_reader :board, :cpu_board
 
    def human_win?
      if (@cpu_sub.sunk? == true) && (@cpu_cruiser.sunk? == true)
-       puts "You WINJKSDHF:SKDJFHSD:FJKHSDF:OSFH"
-       exit!
+      puts "You WINJKSDHF:SKDJFHSD:FJKHSDF:OSFH"
+      return_to_main_menu
      end
    end
 
    def cpu_win?
      if (@sub.sunk? == true) && (@cruiser.sunk? == true)
        puts "I WIN:KHDF:SDIUHFS DOFHSDF"
-       exit!
+      return_to_main_menu
+      end
     end
+
+   def return_to_main_menu
+     game_play
    end
 
 end#class
