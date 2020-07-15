@@ -39,7 +39,11 @@ attr_reader :board, :cpu_board
         puts "So it is decided, we battle the ships!"
         cpu_place_cruiser
         cpu_place_sub
+<<<<<<< HEAD
         sleep(2)
+=======
+
+>>>>>>> 674ddfef4292e4427a991488dd5c0d9868753281
     end
   end
 
@@ -77,7 +81,11 @@ attr_reader :board, :cpu_board
         placement.flatten!
       end #end method
     @board.place(@cruiser, placement)
+<<<<<<< HEAD
     legend
+=======
+
+>>>>>>> 674ddfef4292e4427a991488dd5c0d9868753281
     turn
 
   end
@@ -92,6 +100,7 @@ attr_reader :board, :cpu_board
 
 
   def turn
+<<<<<<< HEAD
    until human_win? == true || cpu_win? == true
      game_board
      puts "Enter the coordinate for your shot:"
@@ -118,6 +127,41 @@ attr_reader :board, :cpu_board
    end
      return_to_main_menu
  end #turn method
+=======
+    until human_win? == true || cpu_win? == true
+      game_board
+      puts "Enter the coordinate for your shot:"
+      shot = gets.chomp!.upcase
+
+      # until @cpu_board.valid_coordinate?(shot) == true && @cpu_board.cells[shot].fired_upon? == false
+      #     p "Those are invalid coordinates or you have already fired on that spot. Please try again."
+      #     shot = gets.chomp!.upcase
+      # end
+      until @cpu_board.valid_coordinate?(shot) == true
+          p "That is an invalid coordinate! Can't you see the map!?"
+          shot = gets.chomp!.upcase
+      end
+      unless @cpu_board.cells[shot].fired_upon? == false
+         "You already fired at that spot. You're not trying to let me win, are you?"
+      else
+        @cpu_board.verify_and_fire(shot)
+            if @cpu_board.cells[shot].empty? == true
+              p "Your shot at #{shot} missed!"
+            elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == true
+               p "Your shot at #{shot} sunk a ship!"
+            elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == false
+               p "You hit a ship at #{shot}!"
+            end
+      end#unless
+          sleep(2)
+        if (@cpu_sub.sunk? == false) || (@cpu_cruiser.sunk? == false)
+          cpu_fire
+        end
+      sleep(2)
+
+    end
+  end #turn method
+>>>>>>> 674ddfef4292e4427a991488dd5c0d9868753281
 
   def cpu_place_cruiser
     coord = @cpu_board.cells[@cpu_board.cells.keys.sample]
@@ -186,13 +230,23 @@ attr_reader :board, :cpu_board
     elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == true
       p "Ha! I got you! My shot at #{cpu} sunk a ship!"
     elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == false
+<<<<<<< HEAD
       p "Ha! I got you at #{cpu}! You ain't slick, you can't hide from me."
+=======
+      p "Ha! I got you at #{cpu}!"
+
+>>>>>>> 674ddfef4292e4427a991488dd5c0d9868753281
     end
   end
 
    def human_win?
      if (@cpu_sub.sunk? == true) && (@cpu_cruiser.sunk? == true)
+<<<<<<< HEAD
       puts "You won? You!? How could I let this happen. Let's play again. Best 5 out of 7."
+=======
+
+      puts "You WINJKSDHF:SKDJFHSD:FJKHSDF:OSFH"
+>>>>>>> 674ddfef4292e4427a991488dd5c0d9868753281
       return_to_main_menu
 
      end
@@ -209,6 +263,7 @@ attr_reader :board, :cpu_board
      game_play
    end
 
+<<<<<<< HEAD
    def legend
      puts "Let's commence on this gentlemanly contest."
      sleep(1)
@@ -225,4 +280,6 @@ attr_reader :board, :cpu_board
    end
 
 
+=======
+>>>>>>> 674ddfef4292e4427a991488dd5c0d9868753281
 end#class

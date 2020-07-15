@@ -1,6 +1,5 @@
 class Game
 attr_reader :board, :cpu_board
-
   def initialize
     @board = Board.new
     @board.generate_cells
@@ -17,9 +16,7 @@ attr_reader :board, :cpu_board
     main_menu
     instructions
     turn
-
     return_to_main_menu
-
   end
 
   def get_user_input
@@ -46,11 +43,10 @@ attr_reader :board, :cpu_board
 
   def instructions
     puts "I have laid out my ships on the grid.\n
-    You now need to lay out your two ships.\
+    You now need to lay out your two ships.\n
     The Submarine is two units long and the Cruiser is three units long."
     puts "  1 2 3 4\nA . . . .\nB . . . .\nC . . . .\nD . . . ."
     puts "Enter the squares for the Submarine (2 spaces):"
-
     user_input = get_user_input
     placement = []
     placement << user_input.split(" ")
@@ -87,7 +83,6 @@ attr_reader :board, :cpu_board
     @cpu_board.render
     p "==============PLAYER BOARD=============="
     @board.render(true)
-    #@board.render
   end
 
 
@@ -143,17 +138,14 @@ attr_reader :board, :cpu_board
   end #cpu cruiser placement
 
   def cpu_place_sub
-
     valid_sub_cells = @board.cells.select do |k, v|
       !k.include?(@cruiser_letter)
     end
-
 
     coord = valid_sub_cells[valid_sub_cells.keys.sample]
     num = coord.coordinate[1].to_i
     letter = coord.coordinate[0]
     coords = [coord.coordinate]
-
 
       if num == 4
         coord2 = "#{letter+(num-1).to_s}"
@@ -169,7 +161,6 @@ attr_reader :board, :cpu_board
         coords.sort!
       end
     @cpu_board.place(@cpu_sub, coords)
-
   end #sub placer method
 
   def cpu_fire
@@ -194,7 +185,6 @@ attr_reader :board, :cpu_board
      if (@cpu_sub.sunk? == true) && (@cpu_cruiser.sunk? == true)
       puts "You won? You!? How could I let this happen. Let's play again. Best 5 out of 7."
       return_to_main_menu
-
      end
    end
 

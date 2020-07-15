@@ -64,17 +64,17 @@ def valid_coordinate?(cord)
    c_row = @cells.keys.select{ |keys| keys[0] == "C"}
    d_row = @cells.keys.select{ |keys| keys[0] == "D"}
 
-   puts "    1 2 3 4"
+   puts "                 1 2 3 4"
     if show_placements == false
-     p "A| #{a_row.map { |key| @cells[key].render}.join(" ")} |"
-     p "B| #{b_row.map { |key| @cells[key].render}.join(" ")} |"
-     p "C| #{c_row.map { |key| @cells[key].render}.join(" ")} |"
-     p "D| #{d_row.map { |key| @cells[key].render}.join(" ")} |"
+     puts "              A| #{a_row.map { |key| @cells[key].render}.join(" ")} |"
+     puts "              B| #{b_row.map { |key| @cells[key].render}.join(" ")} |"
+     puts "              C| #{c_row.map { |key| @cells[key].render}.join(" ")} |"
+     puts "              D| #{d_row.map { |key| @cells[key].render}.join(" ")} |"
    elsif show_placements == true
-     p "A| #{a_row.map { |key| @cells[key].render(true)}.join(" ")} |"
-     p "B| #{b_row.map { |key| @cells[key].render(true)}.join(" ")} |"
-     p "C| #{c_row.map { |key| @cells[key].render(true)}.join(" ")} |"
-     p "D| #{d_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+     puts "              A| #{a_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+     puts "              B| #{b_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+     puts "              C| #{c_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+     puts "              D| #{d_row.map { |key| @cells[key].render(true)}.join(" ")} |"
     end
   end
 end
