@@ -113,6 +113,7 @@ attr_reader :board, :cpu_board
          end
        end
          sleep(2)
+
        cpu_fire
      sleep(2)
    end
