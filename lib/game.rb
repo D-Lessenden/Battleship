@@ -125,11 +125,11 @@ attr_reader :board, :cpu_board
           @cpu_board.verify_and_fire(shot)
            #if fired_upon? == true inform that they already shot there
           if @cpu_board.cells[shot].empty? == true
-            p "Your shot missed!"
+            p "Your shot on #{shot} missed!"
           elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == true
-             p "You sunk a ship!"
+             p "Your shot on #{shot} sunk a ship!"
           elsif @cpu_board.cells[shot].fired_upon? == true && @cpu_board.cells[shot].ship.sunk? == false
-             p "You hit a ship!"
+             p "You hit a ship on #{shot}!"
           end
           #in our fire_upon loop in cell, if its already
 
@@ -214,11 +214,11 @@ attr_reader :board, :cpu_board
     @board.verify_and_fire(cpu)
 
     if @board.cells[cpu].empty? == true
-      p "I missed!? Are you moving your ships?"
+      p "I missed a shot on #{cpu}!? Are you moving your ships?"
     elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == true
-      p "Ha! I got you! One down. One to go."
+      p "Ha! I got you! My shot on #{cpu} sunk a ship! One down. One to go."
     elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == false
-      p "Ha! I got you!"
+      p "Ha! I got you! Hit on #{cpu}!"
     end
   end
 
