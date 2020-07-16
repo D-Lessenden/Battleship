@@ -1,15 +1,14 @@
 class Board
-  attr_reader :cells #added attr_reader w/ :cells so that @board.cells responds as indicated in specs
-
+  attr_reader :cells 
   def initialize
     @cells = {}
   end
 
-  def generate_cells #renamed as per Tim to be accurate to action performed and avoid confusion
+  def generate_cells 
     letters = ["A", "B", "C", "D"]
     numbers = [1, 2, 3, 4]
 
-    letters.each do |letter| #changed to .map so that method returns the grid
+    letters.each do |letter| 
       numbers.each do |number|
         @cells["#{letter}"+"#{number}"] =
         (@cell = Cell.new("#{letter}"+"#{number}"))
@@ -19,15 +18,14 @@ class Board
   end #generate_cells
 
 def valid_coordinate?(cord)
-    @cells.has_key?(cord) #&& @cells[cord].misses == 0 && @cells[cord].hit == 0
-  end
+    @cells.has_key?(cord) 
 
   def valid_and_no_shot(cord)
     @cells.has_key?(cord) && @cells[cord].misses == 0 && @cells[cord].hit == 0
   end
   
   def verify_and_fire(cord)
-    if valid_and_no_shot(cord) #&& @cells[cord].misses == 0 && @cells[cord].hit == 0
+    if valid_and_no_shot(cord) 
       @cells[cord].fire_upon
     else
       (@cells[cord].misses += 1)
