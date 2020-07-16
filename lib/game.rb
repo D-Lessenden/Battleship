@@ -46,9 +46,6 @@ attr_reader :board, :cpu_board
 
     elsif @initial_input == "P"
         puts "So it is decided, we battle the ships!"
-        #Can't test return of "P" with placements within the steps because they are random
-        # cpu_place_cruiser
-        # cpu_place_sub
         true
     end
   end
@@ -81,11 +78,11 @@ attr_reader :board, :cpu_board
 
   def get_user_cruiser_coordinates
     puts "Enter the squares for the Cruiser (3 spaces):"
-    user_input = get_user_input #method
+    user_input = get_user_input
     @user_cruiser_coordinate = []
     @user_cruiser_coordinate << user_input.split(" ")
-    @user_cruiser_coordinate.flatten! #end method
-      until @board.valid_placement?(@cruiser, @user_cruiser_coordinate) == true #method
+    @user_cruiser_coordinate.flatten!
+      until @board.valid_placement?(@cruiser, @user_cruiser_coordinate) == true
         puts "Those are invalid coordinates. Please try again."
         user_input = get_user_input
         @user_cruiser_coordinate = []
@@ -104,7 +101,6 @@ attr_reader :board, :cpu_board
    @cpu_board.render
    p "==============PLAYER BOARD=============="
    @board.render(true)
-   #@board.render
  end
 
 
@@ -187,9 +183,8 @@ attr_reader :board, :cpu_board
       coords << coord2
       coords.sort!
     end
-  @cpu_board.place(@cpu_sub, coords)
-
-end #sub placer method
+    @cpu_board.place(@cpu_sub, coords)
+  end #sub placer method
 
 
   def cpu_fire
