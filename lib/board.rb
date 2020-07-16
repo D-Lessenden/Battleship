@@ -24,9 +24,8 @@ def valid_coordinate?(cord)
 
   def valid_and_no_shot(cord)
     @cells.has_key?(cord) && @cells[cord].misses == 0 && @cells[cord].hit == 0
-
   end
-
+  
   def verify_and_fire(cord)
     if valid_and_no_shot(cord) #&& @cells[cord].misses == 0 && @cells[cord].hit == 0
       @cells[cord].fire_upon
@@ -65,17 +64,17 @@ def valid_coordinate?(cord)
    c_row = @cells.keys.select{ |keys| keys[0] == "C"}
    d_row = @cells.keys.select{ |keys| keys[0] == "D"}
 
-   puts "    1 2 3 4"
+   puts "                 1 2 3 4"
     if show_placements == false
-     p "A| #{a_row.map { |key| @cells[key].render}.join(" ")} |"
-     p "B| #{b_row.map { |key| @cells[key].render}.join(" ")} |"
-     p "C| #{c_row.map { |key| @cells[key].render}.join(" ")} |"
-     p "D| #{d_row.map { |key| @cells[key].render}.join(" ")} |"
+     puts "              A| #{a_row.map { |key| @cells[key].render}.join(" ")} |"
+     puts "              B| #{b_row.map { |key| @cells[key].render}.join(" ")} |"
+     puts "              C| #{c_row.map { |key| @cells[key].render}.join(" ")} |"
+     puts "              D| #{d_row.map { |key| @cells[key].render}.join(" ")} |"
    elsif show_placements == true
-     p "A| #{a_row.map { |key| @cells[key].render(true)}.join(" ")} |"
-     p "B| #{b_row.map { |key| @cells[key].render(true)}.join(" ")} |"
-     p "C| #{c_row.map { |key| @cells[key].render(true)}.join(" ")} |"
-     p "D| #{d_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+     puts "              A| #{a_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+     puts "              B| #{b_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+     puts "              C| #{c_row.map { |key| @cells[key].render(true)}.join(" ")} |"
+     puts "              D| #{d_row.map { |key| @cells[key].render(true)}.join(" ")} |"
     end
   end
 end

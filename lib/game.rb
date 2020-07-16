@@ -53,6 +53,7 @@ attr_reader :board, :cpu_board
 
   def get_user_sub_coordinates
     puts "I have laid out my ships on the grid.\n
+
     You now need to lay out your two ships.\n
     The Cruiser is three units long and the Submarine is two units long."
     puts "  1 2 3 4\nA . . . .\nB . . . .\nC . . . .\nD . . . ."
@@ -84,6 +85,7 @@ attr_reader :board, :cpu_board
     @user_cruiser_coordinate.flatten!
       until @board.valid_placement?(@cruiser, @user_cruiser_coordinate) == true
         puts "Those are invalid coordinates. Please try again."
+
         user_input = get_user_input
         @user_cruiser_coordinate = []
         @user_cruiser_coordinate << user_input.split(" ")
@@ -163,11 +165,11 @@ attr_reader :board, :cpu_board
       !k.include?(@cruiser_letter)
     end
 
-
     coord = valid_sub_cells[valid_sub_cells.keys.sample]
     num = coord.coordinate[1].to_i
     letter = coord.coordinate[0]
     coords = [coord.coordinate]
+
 
 
     if num == 4
@@ -184,6 +186,7 @@ attr_reader :board, :cpu_board
       coords.sort!
     end
     @cpu_board.place(@cpu_sub, coords)
+
   end #sub placer method
 
 
@@ -200,6 +203,7 @@ attr_reader :board, :cpu_board
       p "I missed a shot on #{cpu}!? Are you moving your ships?"
     elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == true
       p "Ha! I got you! My shot on #{cpu} sunk a ship! Take that scallywag!!"
+
     elsif @board.cells[cpu].fired_upon? == true && @board.cells[cpu].ship.sunk? == false
       p "Ha! I got you at #{cpu}! You ain't slick, you can't hide from me."
     end
@@ -207,6 +211,7 @@ attr_reader :board, :cpu_board
 
    def human_win?
      if (@cpu_sub.sunk? == true) && (@cpu_cruiser.sunk? == true)
+
       p "You WIN AAAARRGRGRGHRGRHRGH"
       return_to_main_menu
     end
@@ -214,7 +219,9 @@ attr_reader :board, :cpu_board
 
    def cpu_win?
      if (@sub.sunk? == true) && (@cruiser.sunk? == true)
+
        p "I WIN!! I AM A GOLDEN GOD!!"
+
       return_to_main_menu
       end
     end
@@ -237,5 +244,4 @@ attr_reader :board, :cpu_board
     puts "And remember this one, 'M' stands for a Miss... I have a feeling you'll be seeing that one a lot."
     sleep(3)
   end
-
 end#class

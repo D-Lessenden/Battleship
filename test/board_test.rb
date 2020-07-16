@@ -127,7 +127,6 @@ class BoardTest < Minitest::Test
      @board.place(submarine, ["D3", "D4"])
      assert_equal "D| . . S S |", @board.render(true)
 
-
      @board.cells["A2"].fire_upon
      @board.cells["D3"].fire_upon
      @board.cells["C3"].fire_upon
@@ -136,10 +135,10 @@ class BoardTest < Minitest::Test
      assert_equal "D| . . X X |", @board.render(true)
    end
 
+
   def test_valid_coordinate?
     @board.generate_cells
     assert_equal true, @board.valid_coordinate?("A1")
     assert_equal false, @board.valid_coordinate?("Z1")
   end
-
 end
