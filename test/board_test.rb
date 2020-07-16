@@ -119,61 +119,27 @@ class BoardTest < Minitest::Test
    end
 
    def test_render #Need to write separate and clear tests for render.
+    # skip
      @board.generate_cells
      cruiser = Ship.new("Cruiser", 3)
      submarine = Ship.new("Submarine", 2)
      @board.place(cruiser, ["A1", "A2", "A3"])
      @board.place(submarine, ["D3", "D4"])
+     assert_equal "D| . . S S |", @board.render(true)
 
-     @board.render(true)
-     #@board.render
 
+     @board.cells["A2"].fire_upon
      @board.cells["D3"].fire_upon
-     @board.render(true)
-
      @board.cells["C3"].fire_upon
-     @board.render(true)
-
      @board.cells["D4"].fire_upon
-
      @board.render(true)
-    # binding.pry
-     @board.render
-
-    p1 = "A4"
-    #binding.pry
-
-  #   @board.render
-     @board.valid_coordinate?(p1)
-     @board.cells[p1].fire_upon
-     @board.render
-
-     p1 = "A3"
-     @board.valid_coordinate?(p1)
-     @board.cells[p1].fire_upon
-     @board.render
-     @board.render(true)
-
-     #
-     p1 = "A2"
-     @board.valid_coordinate?(p1)
-     @board.cells[p1].fire_upon
-     #binding.pry
-     @board.render
-
-     @board.cells["B4"].fire_upon
-     @board.cells["C2"].fire_upon
-     @board.cells["C1"].fire_upon
-     @board.cells["D1"].fire_upon
-
-
-
-     p1 = "A1"
-     @board.valid_coordinate?(p1)
-     @board.cells[p1].fire_upon
-     #binding.pry
-     @board.render
-     @board.render(true)
+     assert_equal "D| . . X X |", @board.render(true)
    end
+
+  def test_valid_coordinate?
+    @board.generate_cells
+    assert_equal true, @board.valid_coordinate?("A1")
+    assert_equal false, @board.valid_coordinate?("Z1")
+  end
 
 end
